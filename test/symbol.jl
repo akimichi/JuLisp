@@ -1,7 +1,3 @@
-a = symbol("a")
-b = symbol("b")
-c = symbol("c")
-d = symbol("d")
 
 @testset "LispSymbol" begin
     @test T == symbol("t")
@@ -23,7 +19,7 @@ end
     @test atom(T)
 end
 
-@testset "LispSymbol" begin
+@testset "atom" begin
     @test symbol("a") == a
     @test "a" == string(a)
     @test !null(a)
