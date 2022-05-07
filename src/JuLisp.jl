@@ -12,7 +12,8 @@ export closure
 export LispReader, lispRead, repl
 
 "Lispオブジェクトの抽象型です"
-abstract type Object end
+abstract type Object
+end
 
 "Lispにおけるシンボルの型です"
 struct Sym <: Object
