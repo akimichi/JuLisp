@@ -3,7 +3,7 @@ mutable struct Env
     bindings::Object
 end
 
-env() = Env(NIL)
+emptyEnv() = Env(NIL)
 
 get(env::Env, var) = find(env, var).cdr
 show(io::IO, environment::Env) = print(io, "{$(environment.bindings)}")
@@ -22,7 +22,7 @@ end
 
 
 function defaultEnv()
-    e = env()
+    e = emptyEnv()
     define(e, NIL, NIL)
     define(e, T, T)
     define(e, symbol("atom"), procedure(a -> predicate(atom(a.car))))

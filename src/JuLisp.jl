@@ -6,7 +6,7 @@ export null, atom
 export NIL, T, QUOTE
 export symbol
 export cons, car, cdr, list
-export env, defaultEnv, get, define, set
+export emptyEnv, defaultEnv, get, define, set
 export special, procedure, evaluate
 export closure
 export LispReader, lispRead, repl
