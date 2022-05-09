@@ -70,30 +70,10 @@ function show(io::IO, e::Pair)
     print(io, ")")
 end
 
-"変数の束縛を保持する型です"
-mutable struct Env
-    bind::Object
-end
-
-env() = Env(NIL)
-
-show(io::IO, e::Env) = print(io, "{$(e.bind)}")
-
-function find(env::Env, variable::Sym)
-    bind = env.bind
-    while bind != NIL
-        if variable == bind.car.car
-            return bind.car
-        end
-        bind = bind.cdr
-    end
-    error("Variable $variable not found")
-end
-
-get(env::Env, var) = find(env, var).cdr
+include("./environment.jl")
 
 function define(env::Env, variable::Sym, value::Object)
-    env.bind = Pair(Pair(variable::Sym, value), env.bind) 
+    env.bindings = Pair(Pair(variable::Sym, value), env.bindings) 
     return value
 end
 
@@ -141,7 +121,7 @@ function closureApply(closure::Closure, args::Object, env::Env)
             define(env, parms, args)
         end
     end
-    nenv = Env(closure.env.bind)
+    nenv = Env(closure.env.bindings)
     pairlis(closure.parms, evlis(args, env), nenv)
     return evaluate(closure.body.car, nenv)
 end
@@ -269,24 +249,6 @@ function lispIf(s::Applicable, a::Object, e::Env)
     else
         NIL
     end
-end
-
-function defaultEnv()
-    e = env()
-    define(e, NIL, NIL)
-    define(e, T, T)
-    define(e, symbol("atom"), procedure(a -> predicate(atom(a.car))))
-    define(e, symbol("null"), procedure(a -> predicate(null(a.car))))
-    define(e, symbol("eq"), procedure(a -> predicate(a.car == a.cdr.car)))
-    define(e, symbol("car"), procedure(a -> a.car.car))
-    define(e, symbol("cdr"), procedure(a -> a.car.cdr))
-    define(e, symbol("cons"), procedure(a -> Pair(a.car, a.cdr.car)))
-    define(e, symbol("list"), procedure(a -> a))
-    define(e, QUOTE, special((s, a, e) -> a.car))
-    define(e, symbol("lambda"), special((s, a, e) -> closure(a.car, a.cdr, e)))
-    define(e, symbol("define"), special((s, a, e) -> define(e, a.car, evaluate(a.cdr.car, e))))
-    define(e, symbol("if"), special(lispIf))
-    return e
 end
 
 include("./repl.jl")
