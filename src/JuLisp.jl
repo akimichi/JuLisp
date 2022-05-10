@@ -31,6 +31,7 @@ show(io::IO, n::Num) = print(io, n.value)
 
 include("./symbol.jl")
 include("./pair.jl")
+include("./environment.jl")
 include("./closure.jl")
 
 
@@ -49,7 +50,6 @@ function list(args::Object...)
 end
 
 
-include("./environment.jl")
 
 function define(env::Env, variable::Sym, value::Object)
     env.bindings = Pair(Pair(variable::Sym, value), env.bindings) 
