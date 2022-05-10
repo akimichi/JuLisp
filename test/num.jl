@@ -1,5 +1,5 @@
 @testset "Number" begin
-    @test 0 == number(10).value
+    @test 10 == number(10).value
 end
 
 

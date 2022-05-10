@@ -68,6 +68,7 @@ function procedure(f::Function)
     Applicable((this, args, env) -> f(evlis(args, env)))
 end
 
+evaluate(number::Num, env::Env) = number.value
 evaluate(variable::Sym, env::Env) = get(env, variable)
 
 function evaluate(e::Pair, env::Env)
