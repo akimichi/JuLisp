@@ -10,6 +10,7 @@ export emptyEnv, defaultEnv, get, define, set
 export special, procedure, evaluate
 export closure
 export LispReader, lispRead, repl
+export number
 
 "Lispオブジェクトの抽象型です"
 abstract type Object
@@ -21,16 +22,22 @@ struct Applicable <: Object
     apply::Function
 end
 
+struct Num <: Object
+    value::Number
+end
+number(value::Num) = Num(value)
+show(io::IO, n::Num) = print(io, n.value)
+
 
 include("./symbol.jl")
 include("./pair.jl")
 include("./closure.jl")
 
 
+
 null(e::Object) = e == NIL
 atom(e::Sym) = true
-
-
+atom(exp::Num) = true
 atom(e::Pair) = false
 
 function list(args::Object...)

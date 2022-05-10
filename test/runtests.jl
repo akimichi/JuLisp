@@ -11,6 +11,7 @@ include("./pair.jl")
 include("./env.jl")
 include("./evaluate.jl")
 include("./repl.jl")
+include("./num.jl")
 
 
 
