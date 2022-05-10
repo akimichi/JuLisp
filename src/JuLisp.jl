@@ -25,7 +25,7 @@ end
 struct Num <: Object
     value::Number
 end
-number(value::Num) = Num(value)
+number(value::Number) = Num(value)
 show(io::IO, n::Num) = print(io, n.value)
 
 
