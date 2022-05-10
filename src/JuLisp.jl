@@ -15,21 +15,25 @@ export LispReader, lispRead, repl
 abstract type Object
 end
 
-"Lispにおけるシンボルの型です"
-struct Sym <: Object
-    symbol::Symbol
+
+"Apply可能なLispオブジェクトの型です"
+struct Applicable <: Object
+    apply::Function
 end
 
-symbol(name::String) = Sym(Symbol(name))
+"クロージャです"
+struct Closure <: Object
+    parms::Object
+    body::Object
+    env::Env    # クロージャが定義された時の変数束縛
+    apply::Function # クロージャの関数本体
+end
 
-const NIL = symbol("nil")
-const T = symbol("t")
-const QUOTE = symbol("quote")
-const END_OF_EXPRESSION = symbol("*end-of-expression*")
+include("./symbol.jl")
+
 
 null(e::Object) = e == NIL
 atom(e::Sym) = true
-show(io::IO, e::Sym) = print(io, e.symbol)
 
 struct Pair <: Object
     car::Object
@@ -77,10 +81,6 @@ function define(env::Env, variable::Sym, value::Object)
     return value
 end
 
-"Apply可能なLispオブジェクトの型です"
-struct Applicable <: Object
-    apply::Function
-end
 
 special(f::Function) = Applicable(f)
 
@@ -100,13 +100,6 @@ function evaluate(e::Pair, env::Env)
     a.apply(a, e.cdr, env)
 end
 
-"クロージャです"
-struct Closure <: Object
-    parms::Object
-    body::Object
-    env::Env    # クロージャが定義された時の変数束縛
-    apply::Function # クロージャの関数本体
-end
 
 show(io::IO, c::Closure) = print("Closure{$(c.parms), $(c.body)}")
 
