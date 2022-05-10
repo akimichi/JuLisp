@@ -21,29 +21,17 @@ struct Applicable <: Object
     apply::Function
 end
 
-"クロージャです"
-struct Closure <: Object
-    parms::Object
-    body::Object
-    env::Env    # クロージャが定義された時の変数束縛
-    apply::Function # クロージャの関数本体
-end
 
 include("./symbol.jl")
+include("./pair.jl")
+include("./closure.jl")
 
 
 null(e::Object) = e == NIL
 atom(e::Sym) = true
 
-struct Pair <: Object
-    car::Object
-    cdr::Object
-end
 
 atom(e::Pair) = false
-cons(a::Object, b::Object) = Pair(a, b)
-car(e::Pair) = e.car
-cdr(e::Pair) = e.cdr
 
 function list(args::Object...)
     r = NIL
@@ -53,26 +41,6 @@ function list(args::Object...)
     return r
 end
 
-function show(io::IO, e::Pair)
-    if e.cdr isa Pair && e.cdr.cdr == NIL
-        if e.car == QUOTE
-            print(io, "'", e.cdr.car)
-            return
-        end
-    end
-    x::Object = e
-    print(io, "(")
-    sep = ""
-    while x isa Pair
-        print(io, sep, x.car)
-        sep = " "
-        x = x.cdr
-    end
-    if x != NIL
-        print(io, " . ", x)
-    end
-    print(io, ")")
-end
 
 include("./environment.jl")
 
@@ -100,27 +68,6 @@ function evaluate(e::Pair, env::Env)
     a.apply(a, e.cdr, env)
 end
 
-
-show(io::IO, c::Closure) = print("Closure{$(c.parms), $(c.body)}")
-
-function closureApply(closure::Closure, args::Object, env::Env)
-    function pairlis(parms::Object, args::Object, env::Env)
-        while (parms isa Pair)
-            define(env, parms.car, args.car)
-            parms = parms.cdr
-            args = args.cdr
-        end
-        if parms != NIL
-            define(env, parms, args)
-        end
-    end
-    nenv = Env(closure.env.bindings)
-    pairlis(closure.parms, evlis(args, env), nenv)
-    return evaluate(closure.body.car, nenv)
-end
-
-"クロージャを作成します"
-closure(parms::Object, body::Object, env::Env) = Closure(parms, body, env, closureApply)
 
 const EOF = '\uFFFF'
 
