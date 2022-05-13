@@ -29,7 +29,6 @@ include("./environment.jl")
 include("./closure.jl")
 include("./num.jl")
 
-evaluate(number::Num, env::Env) = number.value
 
 
 null(e::Object) = e == NIL

@@ -9,3 +9,4 @@ end
 show(io::IO, n::Num) = print(io, n.value)
 
 
+evaluate(number::Num, env::Env) = number
