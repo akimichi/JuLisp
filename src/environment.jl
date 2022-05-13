@@ -22,20 +22,20 @@ end
 
 
 function defaultEnv()
-    e = emptyEnv()
-    define(e, NIL, NIL)
-    define(e, T, T)
-    define(e, symbol("atom"), procedure(a -> predicate(atom(a.car))))
-    define(e, symbol("null"), procedure(a -> predicate(null(a.car))))
-    define(e, symbol("eq"), procedure(a -> predicate(a.car == a.cdr.car)))
-    define(e, symbol("car"), procedure(a -> a.car.car))
-    define(e, symbol("cdr"), procedure(a -> a.car.cdr))
-    define(e, symbol("cons"), procedure(a -> Pair(a.car, a.cdr.car)))
-    define(e, symbol("list"), procedure(a -> a))
-    define(e, QUOTE, special((s, a, e) -> a.car))
-    define(e, symbol("lambda"), special((s, a, e) -> closure(a.car, a.cdr, e)))
-    define(e, symbol("define"), special((s, a, e) -> define(e, a.car, evaluate(a.cdr.car, e))))
-    define(e, symbol("if"), special(lispIf))
-    return e
+    env = emptyEnv()
+    define(env, NIL, NIL)
+    define(env, T, T)
+    define(env, symbol("atom"), procedure(args -> predicate(atom(args.car))))
+    define(env, symbol("null"), procedure(args -> predicate(null(args.car))))
+    define(env, symbol("eq"), procedure(args -> predicate(args.car == args.cdr.car)))
+    define(env, symbol("car"), procedure(args -> args.car.car))
+    define(env, symbol("cdr"), procedure(args -> args.car.cdr))
+    define(env, symbol("cons"), procedure(args -> Pair(args.car, args.cdr.car)))
+    define(env, symbol("list"), procedure(args -> args))
+    define(env, QUOTE, special((s, args, env) -> args.car))
+    define(env, symbol("lambda"), special((s, args, env) -> closure(args.car, args.cdr, env)))
+    define(env, symbol("define"), special((s, args, env) -> define(env, args.car, evaluate(args.cdr.car, env))))
+    define(env, symbol("if"), special(lispIf))
+    return env
 end
 

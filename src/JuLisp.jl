@@ -22,18 +22,9 @@ struct Applicable <: Object
     apply::Function
 end
 
-struct Num <: Object
-    value::Number
-end
-function number(value::String)
-  num = parse(Float64, value)
-  isinteger(num) ? Int(num) : num
-  Num(num)
-end
-show(io::IO, n::Num) = print(io, n.value)
-
 
 include("./symbol.jl")
+include("./num.jl")
 include("./pair.jl")
 include("./environment.jl")
 include("./closure.jl")
@@ -72,12 +63,11 @@ function procedure(f::Function)
     Applicable((this, args, env) -> f(evlis(args, env)))
 end
 
-evaluate(number::Num, env::Env) = number.value
 evaluate(variable::Sym, env::Env) = get(env, variable)
 
 function evaluate(e::Pair, env::Env)
-    a = evaluate(e.car, env)
-    a.apply(a, e.cdr, env)
+    closure = evaluate(e.car, env)
+    closure.apply(closure, e.cdr, env)
 end
 
 

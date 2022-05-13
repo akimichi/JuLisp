@@ -59,7 +59,7 @@ function Base.read(r::LispReader)
     issymbol(c::Char) = c != EOF && !isspace(c) && !isdelim(c)
     isinteger(c::Char) = c != EOF && !isspace(c) && isdigit(c) 
 
-    function readInteger(s::String)
+    function readNumber(s::String)
         while isinteger(r.ch)
             s *= r.ch
             getch(r)
@@ -81,7 +81,7 @@ function Base.read(r::LispReader)
         if first == '.'
             return issymbol(r.ch) ? readSymbol(s) : DOT
         elseif isdigit(first)
-            return readInteger(s)
+            return readNumber(s)
         else
             return readSymbol(s)
         end
