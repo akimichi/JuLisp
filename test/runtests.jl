@@ -6,12 +6,19 @@ b = symbol("b")
 c = symbol("c")
 d = symbol("d")
 
-include("./symbol.jl")
-include("./pair.jl")
-include("./env.jl")
-include("./evaluate.jl")
-include("./repl.jl")
-include("./num.jl")
+@testset "value" begin
+  include("./symbol.jl")
+  include("./num.jl")
+end
+@testset "datatype" begin
+  include("./pair.jl")
+end
+
+@testset "interpreter" begin
+  include("./env.jl")
+  include("./evaluate.jl")
+  include("./repl.jl")
+end
 
 
 

@@ -10,7 +10,7 @@ export emptyEnv, defaultEnv, get, define, set
 export special, procedure, evaluate
 export closure
 export LispReader, lispRead, repl
-export number
+export Num, number
 
 "Lispオブジェクトの抽象型です"
 abstract type Object
