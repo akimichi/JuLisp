@@ -58,7 +58,19 @@ function Base.read(r::LispReader)
     isdelim(c::Char) = occursin(c,  "'(),\"")
     issymbol(c::Char) = c != EOF && !isspace(c) && !isdelim(c)
     isinteger(c::Char) = c != EOF && !isspace(c) && isdigit(c) 
+    isdoublequote(c::Char) = c != EOF && !isspace(c) && c == "\"" 
 
+    function readString(s::String)
+        while isinteger(r.ch)
+            s *= r.ch
+            getch(r)
+        end
+        if isdoublequote(r.ch)
+          return string(s)
+        else 
+          error("\" expected")
+        end
+    end
     function readNumber(s::String)
         while isinteger(r.ch)
             s *= r.ch
@@ -67,7 +79,7 @@ function Base.read(r::LispReader)
         return number(s)
     end
     function readSymbol(s::String)
-        while issymbol(r.ch)
+        while isletter(r.ch)
             s *= r.ch
             getch(r)
         end
@@ -80,6 +92,8 @@ function Base.read(r::LispReader)
         getch(r)
         if first == '.'
             return issymbol(r.ch) ? readSymbol(s) : DOT
+        elseif isdoublequote(first)
+            return readString(s)
         elseif isdigit(first)
             return readNumber(s)
         else

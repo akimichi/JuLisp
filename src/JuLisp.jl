@@ -11,6 +11,7 @@ export special, procedure, evaluate
 export closure
 export LispReader, lispRead, repl
 export Num, number
+export Str, string
 
 "Lispオブジェクトの抽象型です"
 abstract type Object
@@ -28,12 +29,14 @@ include("./pair.jl")
 include("./environment.jl")
 include("./closure.jl")
 include("./num.jl")
+include("./str.jl")
 
 
 
 null(e::Object) = e == NIL
 atom(e::Sym) = true
 atom(exp::Num) = true
+atom(exp::Str) = true
 atom(e::Pair) = false
 
 function list(args::Object...)
