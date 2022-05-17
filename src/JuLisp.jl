@@ -11,7 +11,7 @@ export special, procedure, evaluate
 export closure
 export LispReader, lispRead, repl
 export Num, number
-export Str, string
+export Str, str
 
 "Lispオブジェクトの抽象型です"
 abstract type Object

@@ -78,7 +78,7 @@ function Base.read(r::LispReader)
         println("r.ch=$r.ch")
         if isdoublequote(r.ch)
           getch(r)
-          return string(s)
+          return str(s)
         else 
           error("\" expected")
         end

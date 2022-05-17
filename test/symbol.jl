@@ -1,3 +1,5 @@
+using JuLisp
+
 
 @testset "LispSymbol" begin
     @test T == symbol("t")
@@ -7,7 +9,7 @@ end
 
 @testset "NIL" begin
     @test NIL == symbol("nil")
-    @test "nil" == string(NIL)
+    @test "nil" == str(NIL)
     @test null(NIL)
     @test atom(NIL)
 end
