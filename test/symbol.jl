@@ -9,7 +9,7 @@ end
 
 @testset "NIL" begin
     @test NIL == symbol("nil")
-    @test "nil" == str(NIL)
+    @test "nil" == string(NIL)
     @test null(NIL)
     @test atom(NIL)
 end

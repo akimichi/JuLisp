@@ -74,8 +74,8 @@ function Base.read(r::LispReader)
             s *= r.ch
             getch(r)
         end
-        println("s=$s")
-        println("r.ch=$r.ch")
+        # println("s=$s")
+        # println("r.ch=$r.ch")
         if isdoublequote(r.ch)
           getch(r)
           return str(s)
@@ -101,10 +101,10 @@ function Base.read(r::LispReader)
     function readAtom()
         first = r.ch
         s = "" * first
-        println("first=$first")
+        # println("first=$first")
         getch(r)
         if isdoublequote(first)
-            println("readString")
+            # println("readString")
             return readString()
         elseif first == '.'
             return issymbol(r.ch) ? readSymbol(s) : DOT
@@ -148,7 +148,7 @@ function repl(in::LispReader, out::IO, prompt::String)
         print(out, prompt)
         flush(out)
         x = read(in)
-        println(out, "x=$x")
+        # println(out, "x=$x")
         if x == END_OF_EXPRESSION || x == symbol("quit")
             break
         end
