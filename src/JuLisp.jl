@@ -74,13 +74,6 @@ function evaluate(e::Pair, env::Env)
 end
 
 
-const EOF = '\uFFFF'
-
-mutable struct LispReader
-    in::IO
-    ch::Char
-end
-
 
 
 predicate(e::Bool) = e ? T : NIL

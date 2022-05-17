@@ -1,6 +1,7 @@
 struct Str <: Object
     content::String
 end
+
 function string(content::String)
   Str(content)
 end

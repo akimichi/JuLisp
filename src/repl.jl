@@ -1,3 +1,10 @@
+mutable struct LispReader
+    in::IO
+    ch::Char
+end
+const EOF = '\uFFFF'
+
+
 getch(r::LispReader) = eof(r.in) ? r.ch = EOF : r.ch = read(r.in, Char)
 
 function LispReader(in::IO)
@@ -56,16 +63,21 @@ function Base.read(r::LispReader)
     end
 
     isdelim(c::Char) = occursin(c,  "'(),\"")
+    # isdelim(c::Char) = occursin(c,  "'(),")
     issymbol(c::Char) = c != EOF && !isspace(c) && !isdelim(c)
     isinteger(c::Char) = c != EOF && !isspace(c) && isdigit(c) 
-    isdoublequote(c::Char) = c != EOF && !isspace(c) && c == "\"" 
+    isdoublequote(c::Char) = c != EOF && !isspace(c) && c == '\"' 
 
-    function readString(s::String)
-        while isinteger(r.ch)
+    function readString()
+        s = ""
+        while isletter(r.ch)
             s *= r.ch
             getch(r)
         end
+        println("s=$s")
+        println("r.ch=$r.ch")
         if isdoublequote(r.ch)
+          getch(r)
           return string(s)
         else 
           error("\" expected")
@@ -89,11 +101,13 @@ function Base.read(r::LispReader)
     function readAtom()
         first = r.ch
         s = "" * first
+        println("first=$first")
         getch(r)
-        if first == '.'
+        if isdoublequote(first)
+            println("readString")
+            return readString()
+        elseif first == '.'
             return issymbol(r.ch) ? readSymbol(s) : DOT
-        elseif isdoublequote(first)
-            return readString(s)
         elseif isdigit(first)
             return readNumber(s)
         else
@@ -120,6 +134,7 @@ function Base.read(r::LispReader)
     if obj == DOT
         error("unexpected '.'")
     end
+    # println(out, "obj=$obj")
     return obj
 end
 
@@ -133,7 +148,7 @@ function repl(in::LispReader, out::IO, prompt::String)
         print(out, prompt)
         flush(out)
         x = read(in)
-#        println(out, "x=$x")
+        println(out, "x=$x")
         if x == END_OF_EXPRESSION || x == symbol("quit")
             break
         end
