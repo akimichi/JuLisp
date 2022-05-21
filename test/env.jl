@@ -26,7 +26,7 @@
       @test T == evaluate(T, e)
       @test T == evaluate(lispRead("(atom 'a)"), e)
       @test T == evaluate(lispRead("(eq 'a 'a)"), e)
-      @test NIL == evaluate(lispRead("(eq 'a 'b)"), e)
+      @test F == evaluate(lispRead("(eq 'a 'b)"), e)
       @test T == evaluate(lispRead("(eq (cons 'a 'b) (cons 'a 'b))"), e)
       @test a == evaluate(lispRead("(car '(a . b))"), e)
       @test b == evaluate(lispRead("(cdr '(a . b))"), e)
@@ -35,7 +35,7 @@
       @test cons(a, b) == evaluate(lispRead("((lambda (a b) (cons a b)) 'a 'b)"), e)
       @test a == evaluate(lispRead("(define a 'a)"), e)
       @test a == evaluate(lispRead("a"), e)
-      @test a == evaluate(lispRead("(if t 'a 'b)"), e)
+      @test a == evaluate(lispRead("(if #t 'a 'b)"), e)
       @test b == evaluate(lispRead("(if nil 'a 'b)"), e)
       @test NIL == evaluate(lispRead("(if nil 'a)"), e)
   end

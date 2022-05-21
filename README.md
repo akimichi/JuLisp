@@ -14,6 +14,12 @@ $ julia
 pkg> add https://github.com/akimichi/JuLisp
 ~~~
 
+## テスト
+
+> julia
+pkg> activate .
+pkg> test
+
 ## 備忘録
 
 ### シンボル

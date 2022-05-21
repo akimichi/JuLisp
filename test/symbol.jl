@@ -2,7 +2,7 @@ using JuLisp
 
 
 @testset "LispSymbol" begin
-    @test T == symbol("t")
+    @test T == symbol("#t")
     @test QUOTE == symbol("quote")
     @test symbol("a") == symbol("a")
 end
@@ -15,8 +15,8 @@ end
 end
 
 @testset "T" begin
-    @test T == symbol("t")
-    @test "t" == string(T)
+    @test T == symbol("#t")
+    @test "#t" == string(T)
     @test !null(T)
     @test atom(T)
 end

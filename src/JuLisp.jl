@@ -3,7 +3,7 @@ module JuLisp
 import Base.==, Base.show, Base.get, Base.Iterators
 
 export null, atom
-export NIL, T, QUOTE
+export NIL, T, F, QUOTE
 export symbol
 export cons, car, cdr, list
 export emptyEnv, defaultEnv, get, define, set
@@ -33,7 +33,13 @@ include("./str.jl")
 
 
 
-null(e::Object) = e == NIL
+function null(e::Object)
+  if e == NIL
+    true
+  else
+    false
+  end
+end
 atom(e::Sym) = true
 atom(exp::Num) = true
 atom(exp::Str) = true
@@ -76,16 +82,20 @@ end
 
 
 
-predicate(e::Bool) = e ? T : NIL
+predicate(e::Bool) = e ? T : F
+
+is_true(exp) = !(exp == F)
+is_false(exp) = (exp == F)
 
 function lispIf(s::Applicable, a::Object, e::Env)
     c = evaluate(a.car, e)
-    if c != NIL
+    if is_true(c)
+    # if c != F
         evaluate(a.cdr.car, e)
-    elseif a.cdr.cdr != NIL
+    elseif a.cdr.cdr != F
         evaluate(a.cdr.cdr.car, e)
     else
-        NIL
+        F
     end
 end
 
