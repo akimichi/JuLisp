@@ -36,8 +36,8 @@
       @test a == evaluate(lispRead("(define a 'a)"), e)
       @test a == evaluate(lispRead("a"), e)
       @test a == evaluate(lispRead("(if #t 'a 'b)"), e)
-      @test b == evaluate(lispRead("(if nil 'a 'b)"), e)
-      @test NIL == evaluate(lispRead("(if nil 'a)"), e)
+      @test a == evaluate(lispRead("(if nil 'a 'b)"), e)
+      @test a == evaluate(lispRead("(if nil 'a)"), e)
   end
 end
 
