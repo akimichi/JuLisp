@@ -35,7 +35,7 @@
       @test cons(a, b) == evaluate(lispRead("((lambda (a b) (cons a b)) 'a 'b)"), e)
       @test a == evaluate(lispRead("(define a 'a)"), e)
       @test a == evaluate(lispRead("a"), e)
-      @test a == evaluate(lispRead("(if #t 'a 'b)"), e)
+      @test a == evaluate(lispRead("(if T 'a 'b)"), e)
       @test a == evaluate(lispRead("(if nil 'a 'b)"), e)
       @test a == evaluate(lispRead("(if nil 'a)"), e)
   end
