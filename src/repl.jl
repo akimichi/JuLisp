@@ -143,16 +143,16 @@ lispRead(s::String) = read(LispReader(s))
 
 
 function repl(in::LispReader, out::IO, prompt::String)
-    e = defaultEnv()
+    env = defaultEnv()
     while true
         print(out, prompt)
         flush(out)
-        x = read(in)
+        exp = read(in)
         # println(out, "x=$x")
-        if x == END_OF_EXPRESSION || x == symbol("quit")
+        if exp == END_OF_EXPRESSION || exp == symbol("quit")
             break
         end
-        show(out, evaluate(x, e))
+        show(out, evaluate(exp, env))
         println(out)
     end
     return out
