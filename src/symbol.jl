@@ -4,6 +4,7 @@ struct Sym <: Object
 end
 
 show(io::IO, e::Sym) = print(io, e.symbol)
+value(e::Sym) = e.symbol
 
 symbol(name::String) = Sym(Symbol(name))
 

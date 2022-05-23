@@ -12,6 +12,7 @@ export closure
 export LispReader, lispRead, repl
 export Num, number
 export Str, str
+export value
 
 "Lispオブジェクトの抽象型です"
 abstract type Object
