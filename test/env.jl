@@ -20,24 +20,5 @@
       @test cons(a, b) == get(e, a)
   end
 
-  @testset "defaultEnv" begin
-      e = defaultEnv()
-      @test NIL == evaluate(NIL, e)
-      @test T == evaluate(T, e)
-      @test T == evaluate(lispRead("(atom 'a)"), e)
-      @test T == evaluate(lispRead("(eq 'a 'a)"), e)
-      @test F == evaluate(lispRead("(eq 'a 'b)"), e)
-      @test T == evaluate(lispRead("(eq (cons 'a 'b) (cons 'a 'b))"), e)
-      @test a == evaluate(lispRead("(car '(a . b))"), e)
-      @test b == evaluate(lispRead("(cdr '(a . b))"), e)
-      @test cons(a, b) == evaluate(lispRead("(cons 'a 'b)"), e)
-      @test cons(a, cons(b, NIL)) == evaluate(lispRead("(list 'a 'b)"), e)
-      @test cons(a, b) == evaluate(lispRead("((lambda (a b) (cons a b)) 'a 'b)"), e)
-      @test a == evaluate(lispRead("(define a 'a)"), e)
-      @test a == evaluate(lispRead("a"), e)
-      @test a == evaluate(lispRead("(if T 'a 'b)"), e)
-      @test a == evaluate(lispRead("(if nil 'a 'b)"), e)
-      @test a == evaluate(lispRead("(if nil 'a)"), e)
-  end
 end
 

@@ -91,7 +91,8 @@ function Base.read(r::LispReader)
         return number(s)
     end
     function readSymbol(s::String)
-        while isletter(r.ch)
+        while issymbol(r.ch)
+        # while isletter(r.ch)
             s *= r.ch
             getch(r)
         end
@@ -104,7 +105,6 @@ function Base.read(r::LispReader)
         # println("first=$first")
         getch(r)
         if isdoublequote(first)
-            # println("readString")
             return readString()
         elseif first == '.'
             return issymbol(r.ch) ? readSymbol(s) : DOT
