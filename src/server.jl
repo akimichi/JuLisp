@@ -13,6 +13,7 @@ server = listen(2000)
 env = defaultEnv()
 
 parse(str::String) = JuLisp.read(LispReader(str))
+
 # 無限ループさせる
 while true
     # 接続待ち
@@ -28,16 +29,18 @@ while true
           exp = parse(line)
           # リクエストによって処理を分ける（サンプル：「close」が来たらサーバ終了）
           if chomp(line) == "(exit)"
-              exit()
+            # 接続を切る
+            close(peer)
+            exit()
           end
-          println("to evaluate")
+          # println("to evaluate")
           result = JuLisp.evaluate(exp, env)
           println(result)
 
           # レスポンスの書き出し
-          write(peer, value(result))
+          write(peer, string(result))
           # 接続を切る
-          close(peer)
+          # close(peer)
       catch err
         println("エラーです")
         println(err)
