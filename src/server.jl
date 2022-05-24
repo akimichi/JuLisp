@@ -9,41 +9,49 @@
 using Sockets
 using JuLisp
 
-server = listen(2000)
 env = defaultEnv()
-
 parse(str::String) = JuLisp.read(LispReader(str))
 
-# 無限ループさせる
-while true
-    # 接続待ち
-    conn = accept(server)
-    # 接続が来たら、@asyncでコルーチン生成
-    @async begin
-        try
-          # 接続をコピー
-          peer = conn
-          # リクエスト読込
-          line = readline(peer)
-          println(string(line))
-          exp = parse(line)
-          # リクエストによって処理を分ける（サンプル：「close」が来たらサーバ終了）
-          if chomp(line) == "(exit)"
-            # 接続を切る
-            close(peer)
-            exit()
-          end
-          # println("to evaluate")
-          result = JuLisp.evaluate(exp, env)
-          println(result)
+# @async begin
+  server = listen(2000)
 
-          # レスポンスの書き出し
-          write(peer, string(result))
-          # 接続を切る
-          # close(peer)
-      catch err
-        println("エラーです")
-        println(err)
+  # 無限ループさせる
+  while true
+      # 接続待ち
+      socket = accept(server)
+      # 接続が来たら、@asyncでコルーチン生成
+      # 接続をコピー
+      # peer = socket
+      @async while isopen(socket)
+          try
+            # 接続をコピー
+            # peer = socket
+            # リクエスト読込
+            # line = readline(peer)
+            # line = readline(peer, keep=true)
+            line = readline(socket, keep=true)
+            print(string(line))
+            exp = parse(line)
+            # リクエストによって処理を分ける（サンプル：(exit)が来たらサーバ終了）
+            if chomp(line) == "(exit)"
+              # 接続を切る
+              # close(peer)
+              close(socket)
+              exit()
+            end
+            result = JuLisp.evaluate(exp, env)
+            println(result)
+
+            # レスポンスの書き出し
+            # write(peer, string(result) * '\n')
+            write(socket, string(result))
+            # 接続を切る
+            # close(peer)
+        catch err
+          println("エラーです")
+          println(err)
+          exit()
+        end
       end
-    end
-end
+  end
+# end
