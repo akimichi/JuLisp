@@ -13,7 +13,7 @@ env = defaultEnv()
 parse(str::String) = JuLisp.read(LispReader(str))
 
 # @async begin
-  server = listen(2000)
+  server = listen(IPv4(0),2000)
 
   # 無限ループさせる
   while true
