@@ -20,6 +20,9 @@ end
   include("./repl.jl")
 end
 
+@testset "SICP" begin
+  include("./SICP/section-1-1.jl")
+end
 
 
 
