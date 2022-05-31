@@ -13,6 +13,7 @@ export LispReader, lispRead, repl
 export Num, number
 export Str, str
 export value
+export parser
 
 "Lispオブジェクトの抽象型です"
 abstract type Object
@@ -31,7 +32,7 @@ include("./environment.jl")
 include("./closure.jl")
 include("./num.jl")
 include("./str.jl")
-
+include("./parser.jl")
 
 
 function null(e::Object)

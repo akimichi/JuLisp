@@ -24,6 +24,10 @@ end
   include("./SICP/section-1-1.jl")
 end
 
+@testset "parser" begin
+  include("./parser.jl")
+end
+
 
 
 
