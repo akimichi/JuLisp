@@ -4,7 +4,7 @@ import Base.==, Base.show, Base.get, Base.Iterators
 
 export null, atom
 export NIL, T, F, QUOTE
-export symbol
+export symbol, Sym
 export cons, car, cdr, list
 export emptyEnv, defaultEnv, get, define, set
 export special, procedure, evaluate

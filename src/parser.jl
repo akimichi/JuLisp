@@ -5,8 +5,11 @@ float_number = PFloat64() > Num
 num = integer_number | float_number
 word = Word()
 string_token = E"\"" + word + E"\"" > Str
-atom_token = num | string_token
-exp = atom_token + Eos()
+symbol_token = word |> args -> Sym(Symbol(args[1]))
+atom_token = num | string_token | symbol_token
+quoted_symbol = E"'" + symbol_token |> args -> list(QUOTE, args[1])
+compound = quoted_symbol
+exp = (atom_token | compound ) + Eos()
 
 
 function parser(s::String)

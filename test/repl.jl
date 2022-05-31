@@ -8,5 +8,6 @@
     @test "1\n" == String(take!(proc("1")))
     @test "3\n" == String(take!(proc("(+ 1 2)")))
     @test "-1\n" == String(take!(proc("(- 3 4)")))
+    @test "1024\n" == String(take!(proc("(^ 2 10)")))
     @test "6\n" == String(take!(proc("(* (+ 1 2)  (- 6 4))")))
 end
