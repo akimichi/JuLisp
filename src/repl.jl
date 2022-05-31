@@ -15,6 +15,8 @@ end
 
 LispReader(s::String) = LispReader(IOBuffer(s))
 
+lispRead(s::String)::Object = read(LispReader(s))
+
 function Base.read(r::LispReader)
 
     DOT = symbol(".")
@@ -138,7 +140,6 @@ function Base.read(r::LispReader)
     return obj
 end
 
-lispRead(s::String) = read(LispReader(s))
 
 
 
