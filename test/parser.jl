@@ -11,9 +11,11 @@
     @testset "symbol" begin
       @test symbol("abc") == parser("abc")
     end
-    # @testset "compound" begin
-    #   @test a == parser("'a")
-    # end
+    @testset "compound" begin
+      # @test a == parser("'a")
+      # @test Pair(Num(1), NIL) == parser("(1)")
+      @test cons(Num(1), NIL) == parser("(1)")
+    end
   end
 end
 @testset "evaluate" begin
