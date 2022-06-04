@@ -15,6 +15,9 @@
       # @test a == parser("'a")
       # @test Pair(Num(1), NIL) == parser("(1)")
       @test cons(Num(1), NIL) == parser("(1)")
+      @test cons(Num(1), NIL) == parser("( 1 )")
+      @test cons(Num(1), NIL) == parser(" ( 1 )")
+      @test cons(Num(1), NIL) == parser(" ( 1)")
     end
   end
 end
