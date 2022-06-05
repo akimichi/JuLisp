@@ -55,6 +55,14 @@ function list(args::Object...)
     return r
 end
 
+function list(args::Array{Object})
+    r = NIL
+    for e in reverse(args)
+        r = Pair(e, r)
+    end
+    return r
+end
+
 
 
 function define(env::Env, variable::Sym, value::Object)

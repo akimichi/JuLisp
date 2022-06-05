@@ -10,19 +10,28 @@
     end
     @testset "symbol" begin
       @test symbol("abc") == parser("abc")
+      @test a == parser("a")
     end
     @testset "compound" begin
-      # @test a == parser("'a")
-      # @test Pair(Num(1), NIL) == parser("(1)")
-      @test cons(Num(1), NIL) == parser("(1)")
-      @test cons(Num(1), NIL) == parser("( 1 )")
-      @test cons(Num(1), NIL) == parser(" ( 1 )")
-      @test cons(Num(1), NIL) == parser(" ( 1)")
+      #@test Pair(Num(1), NIL) == parser("'(1)")
+      # @test cons(Num(1), NIL) == parser("( 1 2 )")
+      # @test cons(Num(1), NIL) == parser("(1)")
+      # @test cons(Num(1), NIL) == parser("( 1 )")
+      # @test cons(Num(1), NIL) == parser(" ( 1 )")
+      # @test cons(Num(1), NIL) == parser(" ( 1)")
     end
   end
 end
-@testset "evaluate" begin
-  e = defaultEnv()
-  @test a == evaluate(parser("'a"), e)
 
+@testset "parse_rule" begin
+  @testset "num" begin
+    @test Num(1) == parse_rule(num,"1")
+  
+  end
+  
 end
+# @testset "evaluate" begin
+#   e = defaultEnv()
+#   @test a == evaluate(parser("'a"), e)
+# 
+# end
