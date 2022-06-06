@@ -24,10 +24,21 @@
 end
 
 @testset "parse_rule" begin
-  @testset "num" begin
+  @testset "atom" begin
     @test Num(1) == parse_rule(num,"1")
-  
+    @test Str("abx") == parse_rule(string_token,"\"abx\"")
+    @test symbol("abc") == parse_rule(symbol_token, "abc")
   end
+  @testset "items" begin
+    # Any[1,2]
+    @test [Num(1), Num(2)]  == parse_rule(items,"1 2")
+  end
+  @testset "list_token" begin
+    @test cons(Num(1), cons(Num(2),NIL))  == parse_rule(list_token,"(1 2)")
+  end
+  # @testset "list" begin
+  #   @test Pair(Num(1), NIL)  == parse_rule(list_token,"(1)")
+  # end
   
 end
 # @testset "evaluate" begin

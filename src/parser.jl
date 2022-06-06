@@ -1,7 +1,7 @@
 using ParserCombinator
 
 export parse_rule
-export num
+export num, string_token,symbol_token, list_token, items
 
 spc = Drop(Star(Space()))
 
@@ -17,17 +17,16 @@ spc = Drop(Star(Space()))
   # quoted_symbol = E"'" + word |> args -> list(QUOTE, args[1])
   # quoted_list = E"'" + exp |> args -> list(QUOTE, args[1])
   quoted_exp = E"'" + exp |> args -> list(QUOTE, args[1])
-  #items = Star(spc+exp+spc) |> args -> list(args)
-  items = exp |> args -> list(args[1])
-  list_token = E"(" + spc + items + spc + E")"
-  compound = quoted_exp
-  exp = (atom_token | compound | list_token) + Eos()
+  items = Repeat(spc+num) |> args -> convert(Array{Object}, args)
+  # items = num
+  list_token = E"(" + items + E")" |> args -> list(args[1])
+  exp = (atom_token | quoted_exp | list_token) + Eos()
+end
 
 
-  function parser(s::String)
-    parse_one(s, exp)[1]
-  end
-  function parse_rule(rule, s::String)
-    parse_one(s, rule)[1]
-  end
+function parser(s::String)
+  parse_one(s, exp)[1]
+end
+function parse_rule(rule, s::String)
+  parse_one(s, rule)[1]
 end
