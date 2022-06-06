@@ -18,7 +18,6 @@ spc = Drop(Star(Space()))
   # quoted_list = E"'" + exp |> args -> list(QUOTE, args[1])
   quoted_exp = E"'" + exp |> args -> list(QUOTE, args[1])
   items = Repeat(spc+num) |> args -> convert(Array{Object}, args)
-  # items = num
   list_token = E"(" + items + E")" |> args -> list(args[1])
   exp = (atom_token | quoted_exp | list_token) + Eos()
 end
@@ -27,6 +26,6 @@ end
 function parser(s::String)
   parse_one(s, exp)[1]
 end
-function parse_rule(rule, s::String)
+function parser(rule, s::String)
   parse_one(s, rule)[1]
 end
