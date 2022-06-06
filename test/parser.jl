@@ -35,10 +35,19 @@ end
   end
   @testset "list_token" begin
     @test cons(Num(1), cons(Num(2),NIL))  == parser(list_token,"(1 2)")
+    @test cons(Num(1), NIL)  == parser(list_token,"(1)")
   end
-  # @testset "list" begin
-  #   @test Pair(Num(1), NIL)  == parser(list_token,"(1)")
-  # end
+  @testset "quoted_symbol" begin
+    @test  cons(QUOTE, symbol("a"))  == parser(quoted_symbol,"'a")
+  end
+  @testset "quoted_exp" begin
+    # @test  cons(QUOTE, cons(symbol("a"), NIL))  == parser(quoted_exp,"'a")
+    # @test cons(Num(1), cons(Num(2),NIL))  == parser(quoted_exp,"'(1 2)")
+  end
+  @testset "exp" begin
+    # @test  cons(QUOTE, cons(symbol("a"), NIL))  == parser(exp,"'a")
+    # @test cons(Num(1), cons(Num(2),NIL))  == parser(exp,"'(1 2)")
+  end
   
 end
 # @testset "evaluate" begin
