@@ -50,8 +50,10 @@ end
   end
   
 end
-# @testset "evaluate" begin
-#   e = defaultEnv()
-#   @test a == evaluate(parser("'a"), e)
-# 
-# end
+
+@testset "evaluate" begin
+  e = defaultEnv()
+  @test Num(1) == evaluate(parser(num, "1"), e)
+  # @test a == evaluate(parser(quoted_symbol, "'a"), e)
+
+end
