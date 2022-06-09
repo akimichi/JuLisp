@@ -13,7 +13,7 @@ export LispReader, lispRead, repl
 export Num, number
 export Str, str
 export value
-export parser
+export parser, interpret
 
 "Lispオブジェクトの抽象型です"
 abstract type Object
@@ -110,5 +110,6 @@ function lispIf(s::Applicable, a::Object, e::Env)
 end
 
 include("./repl.jl")
+include("./interpreter.jl")
 
 end # module

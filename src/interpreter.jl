@@ -4,13 +4,16 @@ function interpret(in::IO, out::IO, prompt::String)
     while true
         print(out, prompt)
         flush(out)
-        exp = read(in)
+        input::Sting = readline(in)
         # println(out, "x=$x")
-        if exp == END_OF_EXPRESSION || exp == symbol("quit")
+        if symbol(input) == END_OF_EXPRESSION || symbol(input) == symbol("quit")
             break
         end
+        exp = parser(input)
         show(out, evaluate(exp, env))
         println(out)
     end
     return out
 end
+
+interpret() = interpret(Base.stdi, Base.stdout, "JuLisp> ")
