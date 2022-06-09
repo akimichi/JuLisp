@@ -1,3 +1,4 @@
+export interpret
 
 function interpret(in::IO, out::IO, prompt::String)
     env = defaultEnv()
