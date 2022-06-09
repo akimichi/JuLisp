@@ -20,6 +20,7 @@ spc = Drop(Star(Space()))
   quoted_exp = quoted_symbol | quoted_list
   items = Repeat(spc+num) |> args -> convert(Array{Object}, args)
   list_token = E"(" + items + E")" |> args -> list(args[1])
+  # dotted_pair = E"(" + exp   + E")" |> args -> list(args[1])
   exp = (atom_token | quoted_exp | list_token) + Eos()
 end
 

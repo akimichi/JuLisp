@@ -44,10 +44,6 @@ end
     # @test  cons(QUOTE, cons(symbol("a"), NIL))  == parser(quoted_exp,"'a")
     # @test cons(Num(1), cons(Num(2),NIL))  == parser(quoted_exp,"'(1 2)")
   end
-  @testset "exp" begin
-    # @test  cons(QUOTE, cons(symbol("a"), NIL))  == parser(exp,"'a")
-    # @test cons(Num(1), cons(Num(2),NIL))  == parser(exp,"'(1 2)")
-  end
   
 end
 
