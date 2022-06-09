@@ -5,7 +5,7 @@ function interpret(in::IO, out::IO, prompt::String)
     while true
         print(out, prompt)
         flush(out)
-        input::Sting = readline(in)
+        input::String = readline(in)
         # println(out, "x=$x")
         if symbol(input) == END_OF_EXPRESSION || symbol(input) == symbol("quit")
             break
