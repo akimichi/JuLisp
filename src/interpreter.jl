@@ -17,4 +17,4 @@ function interpret(in::IO, out::IO, prompt::String)
     return out
 end
 
-interpret() = interpret(Base.stdi, Base.stdout, "JuLisp> ")
+interpret() = interpret(Base.stdin, Base.stdout, "JuLisp> ")
