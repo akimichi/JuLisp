@@ -39,13 +39,13 @@ end
   end
   @testset "dotted_pair" begin
     @test cons(Num(1), Num(2))  == parser(dotted_pair, "(1 . 2)")
+    @test cons(a, cons(b, c))  == parser(dotted_pair, "(a b . c)")
   end
   @testset "quoted_symbol" begin
     @test  cons(QUOTE, symbol("a"))  == parser(quoted_symbol,"'a")
   end
-  @testset "quoted_exp" begin
-    # @test  cons(QUOTE, cons(symbol("a"), NIL))  == parser(quoted_exp,"'a")
-    # @test cons(Num(1), cons(Num(2),NIL))  == parser(quoted_exp,"'(1 2)")
+  @testset "quoted_list" begin
+    @test cons(QUOTE, cons(Num(1), cons(Num(2),NIL)))  == parser(quoted_list,"'(1 2)")
   end
   
 end
