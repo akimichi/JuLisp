@@ -25,7 +25,7 @@ end
 
 @testset "parser rule" begin
   @testset "atom" begin
-    @test Num(1) == parser(num,"1")
+    @test Num(1) == parser(num_token,"1")
     @test Str("abx") == parser(string_token,"\"abx\"")
     @test symbol("abc") == parser(symbol_token, "abc")
   end
@@ -52,7 +52,7 @@ end
 
 @testset "evaluate" begin
   e = defaultEnv()
-  @test Num(1) == evaluate(parser(num, "1"), e)
+  @test Num(1) == evaluate(parser(num_token, "1"), e)
   # @test a == evaluate(parser(quoted_symbol, "'a"), e)
 
 end
