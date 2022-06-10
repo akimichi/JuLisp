@@ -1,7 +1,7 @@
 using ParserCombinator
 
 export parse_rule
-export num, string_token,symbol_token, list_token, items, quoted_exp, quoted_symbol, expression, dotted_pair, quoted_list
+export num, string_token,symbol_token, list_token, items, quoted_exp, quoted_symbol, expression, dotted_pair, quoted_list, sequence
 
 function makeList(elements::Array{Object, 1}, last::Object)
     if last == NIL
@@ -30,12 +30,14 @@ spc = Drop(Star(Space()))
   quoted_symbol = E"'" + symbol_token |> args -> Pair(QUOTE, args[1])
   quoted_list = E"'" + list_token |> args -> Pair(QUOTE, args[1])
   quoted_exp = quoted_symbol | quoted_list
-  expression = (atom_token | quoted_exp | list_token)
+  sequence = Delayed()
+  expression = (atom_token | quoted_exp | sequence)
   items = Repeat(expression) |> args -> convert(Array{Object}, args)
   dotted_pair = E"(" + spc + items + spc + E"." + spc + expression + spc + E")" |> args -> makeList(args[1],args[2])
   list_token.matcher = E"(" + items + E")" |> args -> makeList(args[1],NIL)
-  sequence = dotted_pair | list_token
-  exp.matcher = (atom_token | quoted_exp | sequence) + Eos()
+  sequence.matcher = dotted_pair | list_token
+  exp.matcher = expression + Eos()
+  # exp.matcher = (atom_token | quoted_exp | sequence) + Eos()
 end
 
 
