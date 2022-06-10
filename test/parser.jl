@@ -38,7 +38,7 @@ end
     @test cons(Num(1), NIL)  == parser(list_token,"(1)")
   end
   @testset "dotted_pair" begin
-    @test cons(Num(1), Num(2))  == parser(dotted_pair, "(1 2 . 2)")
+    @test cons(Num(1), Num(2))  == parser(dotted_pair, "(1 . 2)")
   end
   @testset "quoted_symbol" begin
     @test  cons(QUOTE, symbol("a"))  == parser(quoted_symbol,"'a")
