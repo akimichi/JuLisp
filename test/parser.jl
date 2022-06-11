@@ -24,6 +24,20 @@
 end
 
 @testset "parser rule" begin
+  @testset "head_sign" begin
+    @test "+" == parser(head_sign,"+")
+    @test "*" == parser(head_sign,"*")
+    @test "|" == parser(head_sign,"|")
+  end
+  @testset "identifier" begin
+    @test "a" == parser(identifier,"a")
+  end
+  @testset "letter" begin
+    @test "a" == parser(letter,"a")
+  end
+  @testset "digit" begin
+    @test "3" == parser(digit,"3")
+  end
   @testset "atom" begin
     @test Num(1) == parser(num_token,"1")
     @test Str("abx") == parser(string_token,"\"abx\"")
@@ -36,6 +50,8 @@ end
   @testset "list_token" begin
     @test cons(Num(1), cons(Num(2),NIL))  == parser(list_token,"(1 2)")
     @test cons(Num(1), NIL)  == parser(list_token,"(1)")
+    @test cons(symbol("car"), cons(Num(1), NIL))  == parser(list_token,"(car 1)")
+    # @test cons(symbol("car"), cons(Num(1), NIL))  == parser(list_token,"(+ 1 2)")
   end
   @testset "dotted_pair" begin
     @test cons(Num(1), Num(2))  == parser(dotted_pair, "(1 . 2)")
@@ -44,8 +60,9 @@ end
   @testset "quoted_symbol" begin
     @test  cons(QUOTE, symbol("a"))  == parser(quoted_symbol,"'a")
   end
-  @testset "quoted_list" begin
-    @test cons(QUOTE, cons(Num(1), cons(Num(2),NIL)))  == parser(quoted_list,"'(1 2)")
+  @testset "quoted_sequence" begin
+    @test cons(QUOTE, cons(Num(1), cons(Num(2),NIL)))  == parser(quoted_sequence,"'(1 2)")
+    @test cons(QUOTE, cons(a, b))  == parser(quoted_sequence,"'(a . b)")
   end
   
 end
@@ -53,6 +70,8 @@ end
 @testset "evaluate" begin
   e = defaultEnv()
   @test Num(1) == evaluate(parser(num_token, "1"), e)
+  # @test b == evaluate(parser("(+ 1 2)"), e)
+  # @test b == evaluate(parser("(car '(a . b))"), e)
   # @test a == evaluate(parser(quoted_symbol, "'a"), e)
 
 end

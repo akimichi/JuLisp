@@ -1,7 +1,7 @@
 using ParserCombinator
 
 export parse_rule
-export num_token, string_token,symbol_token, list_token, items, quoted_exp, quoted_symbol, expression, dotted_pair, quoted_list, sequence
+export identifier, letter,digit, head_sign, num_token, string_token,symbol_token, list_token, items, quoted_exp, quoted_symbol, expression, dotted_pair, quoted_sequence, sequence
 
 function makeList(elements::Array{Object, 1}, last::Object)
     if last == NIL
@@ -18,8 +18,18 @@ end
 spc = Drop(Star(Space()))
 
 @with_pre spc begin
+  letter = p"[a-zA-Z]"
+  digit = p"[0-9]"
+  head_sign = p"[+-\\*/^&~\|#]"
+  tail_sign = p"[!?]"
+  initial = head_sign | letter
+  peculiar_identifier = head_sign
+  subsequent = initial | digit
+  identifier = initial + Repeat(subsequent)  |> args -> Sym(symbol(string(args)))
+
   sentence = Delayed()
   list_token = Delayed()
+  sequence = Delayed()
   integer_number = PInt64() > Num
   float_number = PFloat64() > Num
   num_token = integer_number | float_number
@@ -28,9 +38,8 @@ spc = Drop(Star(Space()))
   symbol_token = word |> args -> Sym(Symbol(args[1]))
   atom_token = num_token | string_token | symbol_token
   quoted_symbol = E"'" + symbol_token |> args -> Pair(QUOTE, args[1])
-  quoted_list = E"'" + list_token |> args -> Pair(QUOTE, args[1])
-  quoted_exp = quoted_symbol | quoted_list
-  sequence = Delayed()
+  quoted_sequence = E"'" + sequence |> args -> Pair(QUOTE, args[1])
+  quoted_exp = quoted_symbol | quoted_sequence
   expression = (atom_token | quoted_exp | sequence)
   items = Repeat(expression) |> args -> convert(Array{Object}, args)
   dotted_pair = E"(" + spc + items + spc + E"." + spc + expression + spc + E")" |> args -> makeList(args[1],args[2])
