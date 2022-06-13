@@ -8,10 +8,6 @@
     @testset "string" begin
       @test Str("abc") == parser("\"abc\"")
     end
-    @testset "symbol" begin
-      @test symbol("abc") == parser("abc")
-      @test a == parser("a")
-    end
     @testset "compound" begin
       #@test Pair(Num(1), NIL) == parser("'(1)")
       # @test cons(Num(1), NIL) == parser("( 1 2 )")
@@ -29,14 +25,31 @@ end
     @test "*" == parser(head_sign,"*")
     @test "|" == parser(head_sign,"|")
   end
+  @testset "initial" begin
+    @test "a" == parser(initial,"a")
+    @test "+" == parser(initial,"+")
+  end
+  @testset "subsequent" begin
+    @test "a" == parser(subsequent,"a")
+    @test "3" == parser(subsequent,"3")
+  end
   @testset "identifier" begin
-    @test "a" == parser(identifier,"a")
+    @test a == parser(identifier,"a")
+    @test a == parser(identifier,"a b")
+    @test Sym(Symbol("abc")) == parser(identifier,"abc")
+    @test Sym(Symbol("+")) == parser(identifier,"+")
   end
   @testset "letter" begin
     @test "a" == parser(letter,"a")
+    @test "a" == parser(letter,"a b")
   end
   @testset "digit" begin
     @test "3" == parser(digit,"3")
+  end
+  @testset "symbol_token" begin
+    @test a == parser("a")
+    # @test a == parser("a b")
+    @test symbol("abc") == parser(symbol_token, "abc")
   end
   @testset "atom" begin
     @test Num(1) == parser(num_token,"1")
@@ -70,7 +83,7 @@ end
 @testset "evaluate" begin
   e = defaultEnv()
   @test Num(1) == evaluate(parser(num_token, "1"), e)
-  # @test b == evaluate(parser("(+ 1 2)"), e)
+  @test Num(3) == evaluate(parser("(+ 1 2)"), e)
   # @test b == evaluate(parser("(car '(a . b))"), e)
   # @test a == evaluate(parser(quoted_symbol, "'a"), e)
 

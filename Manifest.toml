@@ -97,11 +97,11 @@ version = "1.4.1"
 
 [[deps.ParserCombinator]]
 deps = ["AutoHashEquals", "Printf"]
-git-tree-sha1 = "c9f6f388961719ebbdef9fcc0a2b12db214b725f"
+git-tree-sha1 = "3a0e65d9a73e3bb6ed28017760a1664423d7e37c"
 repo-rev = "master"
 repo-url = "https://github.com/andrewcooke/ParserCombinator.jl"
 uuid = "fae87a5f-d1ad-5cf0-8f61-c941e1580b46"
-version = "2.1.0"
+version = "2.1.1"
 
 [[deps.Pkg]]
 deps = ["Artifacts", "Dates", "Downloads", "LibGit2", "Libdl", "Logging", "Markdown", "Printf", "REPL", "Random", "SHA", "Serialization", "TOML", "Tar", "UUIDs", "p7zip_jll"]
