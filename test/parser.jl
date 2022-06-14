@@ -8,22 +8,14 @@
     @testset "string" begin
       @test Str("abc") == parser("\"abc\"")
     end
-    @testset "compound" begin
-      #@test Pair(Num(1), NIL) == parser("'(1)")
-      # @test cons(Num(1), NIL) == parser("( 1 2 )")
-      # @test cons(Num(1), NIL) == parser("(1)")
-      # @test cons(Num(1), NIL) == parser("( 1 )")
-      # @test cons(Num(1), NIL) == parser(" ( 1 )")
-      # @test cons(Num(1), NIL) == parser(" ( 1)")
-    end
   end
 end
 
 @testset "parser rule" begin
-  @testset "head_sign" begin
-    @test "+" == parser(head_sign,"+")
-    @test "*" == parser(head_sign,"*")
-    @test "|" == parser(head_sign,"|")
+  @testset "prefix" begin
+    @test "+" == parser(prefix,"+")
+    @test "*" == parser(prefix,"*")
+    @test "|" == parser(prefix,"|")
   end
   @testset "initial" begin
     @test "a" == parser(initial,"a")
