@@ -1,5 +1,7 @@
 using Dates
 
+export date, today
+
 struct DateType <: Object
     value::Date
 end

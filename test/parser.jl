@@ -9,7 +9,7 @@
       @test Str("abc") == parser("\"abc\"")
     end
     @testset "date_token" begin
-      @test Str("abc") == parser(date_token, "2022-06-14")
+      @test date("2022-06-14") == parser(date_token, "@2022-06-14")
     end
   end
 end
@@ -105,6 +105,7 @@ end
     @test b == evaluate(parser("(cdr '(a . b))"), e)
     @test cons(a, b) == evaluate(parser("(cons 'a 'b)"), e)
     @test cons(a, cons(b, NIL)) == evaluate(parser("(list 'a 'b)"), e)
+    @test today() == evaluate(parser("(today!)"), e)
   end 
   @testset "special" begin
     @test a == evaluate(parser("(define a 'a)"), e)
