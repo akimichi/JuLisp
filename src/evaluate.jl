@@ -1,6 +1,6 @@
 
-evaluate(num, env::Env) = num
-evaluate(str, env::Env) = str
+evaluate(atom, env::Env) = atom
+# evaluate(date::DateType, env::Env) = date
 
 evaluate(variable::Sym, env::Env) = get(env, variable)
 

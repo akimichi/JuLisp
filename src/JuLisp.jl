@@ -41,6 +41,7 @@ include("./closure.jl")
 include("./evaluate.jl")
 include("./num.jl")
 include("./str.jl")
+include("./date.jl")
 include("./parser.jl")
 
 

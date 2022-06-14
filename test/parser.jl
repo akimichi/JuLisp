@@ -8,6 +8,9 @@
     @testset "string" begin
       @test Str("abc") == parser("\"abc\"")
     end
+    @testset "date_token" begin
+      @test Str("abc") == parser(date_token, "2022-06-14")
+    end
   end
 end
 

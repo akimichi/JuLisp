@@ -1,7 +1,7 @@
 using ParserCombinator
 
 export parse_rule
-export initial, subsequent, identifier, letter,digit, prefix, num_token, string_token,symbol_token, list_token, items, quoted_exp, quoted_symbol, expression, dotted_pair, quoted_sequence, sequence
+export initial, subsequent, identifier, letter,digit, prefix, num_token, string_token, date_token, symbol_token, list_token, items, quoted_exp, quoted_symbol, expression, dotted_pair, quoted_sequence, sequence
 
 function makeList(elements::Array{Object, 1}, last::Object)
     if last == NIL
@@ -33,7 +33,8 @@ float_number = PFloat64() > Num
 num_token = integer_number | float_number
 string_token = E"\"" + Word() + E"\"" > Str
 symbol_token = identifier
-atom_token = num_token | string_token | symbol_token
+date_token = E"@" + p"\d+-\d+-\d+" > DateType
+atom_token = num_token | string_token | symbol_token | date_token
 quoted_symbol = E"'" + symbol_token |> args -> list(QUOTE, args[1])
 quoted_sequence = E"'" + sequence |> args -> list(QUOTE, args[1])
 quoted_exp = quoted_symbol | quoted_sequence
