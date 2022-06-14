@@ -68,14 +68,17 @@ end
   end
   @testset "dotted_pair" begin
     @test cons(Num(1), Num(2))  == parser(dotted_pair, "(1 . 2)")
+    @test cons(a, b)  == parser(dotted_pair, "(a . b)")
     @test cons(a, cons(b, c))  == parser(dotted_pair, "(a b . c)")
   end
-  @testset "quoted_symbol" begin
-    @test  cons(QUOTE, symbol("a"))  == parser(quoted_symbol,"'a")
-  end
-  @testset "quoted_sequence" begin
-    @test cons(QUOTE, cons(Num(1), cons(Num(2),NIL)))  == parser(quoted_sequence,"'(1 2)")
-    @test cons(QUOTE, cons(a, b))  == parser(quoted_sequence,"'(a . b)")
+  @testset "quote" begin
+    @testset "quoted_symbol" begin
+      @test  cons(QUOTE, symbol("a"))  == parser(quoted_symbol,"'a")
+    end
+    @testset "quoted_sequence" begin
+      @test cons(QUOTE, cons(cons(Num(1), cons(Num(2),NIL)),NIL))  == parser(quoted_sequence,"'(1 2)")
+      @test cons(QUOTE, cons(cons(a, b),NIL))  == parser(quoted_sequence,"'(a . b)")
+    end
   end
   
 end
@@ -84,6 +87,7 @@ end
   e = defaultEnv()
   @test Num(1) == evaluate(parser(num_token, "1"), e)
   @test Num(3) == evaluate(parser("(+ 1 2)"), e)
+  @test cons(a,b) == evaluate(parser("'(a . b)"), e)
   # @test b == evaluate(parser("(car '(a . b))"), e)
   # @test a == evaluate(parser(quoted_symbol, "'a"), e)
 

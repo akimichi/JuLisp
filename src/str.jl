@@ -10,4 +10,3 @@ show(io::IO, str::Str) = print(io, str.content)
 value(str::Str) = str.content
 
 
-evaluate(str, env::Env) = str
