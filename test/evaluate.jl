@@ -2,13 +2,10 @@
     e = defaultEnv()
     @testset "atom" begin
       @test Num(1) == evaluate(parser(num_token, "1"), e)
+      @test a == evaluate(parser("'a"), e)
+      @test NIL == evaluate(NIL, e)
+      @test T == evaluate(T, e)
     end
-    @test a == evaluate(lispRead("'a"), e)
-    @test a == evaluate(lispRead("(car '(a . b))"), e)
-    @test b == evaluate(lispRead("(cdr '(a . b))"), e)
-    @test cons(a, b) == evaluate(lispRead("(cons 'a ' b)"), e)
-    @test cons(a, NIL) == evaluate(lispRead("(cons 'a nil)"), e)
-    @test list(a, b, c) == evaluate(lispRead("(list 'a 'b 'c)"), e)
     @testset "quoted" begin
       @test a == evaluate(parser(quoted_symbol, "'a"), e)
       @test cons(a,b) == evaluate(parser("'(a . b)"), e)
@@ -29,6 +26,12 @@
       @test b == evaluate(parser("(cdr '(a . b))"), e)
       @test cons(a, b) == evaluate(parser("(cons 'a 'b)"), e)
       @test cons(a, cons(b, NIL)) == evaluate(parser("(list 'a 'b)"), e)
+      @test a == evaluate(parser("(car '(a . b))"), e)
+      @test b == evaluate(parser("(cdr '(a . b))"), e)
+      @test cons(a, b) == evaluate(parser("(cons 'a 'b)"), e)
+      @test cons(a, NIL) == evaluate(parser("(cons 'a nil)"), e)
+      @test list(a, b, c) == evaluate(parser("(list 'a 'b 'c)"), e)
+
       @test today() == evaluate(parser("(today!)"), e)
     end 
     @testset "special" begin
@@ -55,9 +58,6 @@ end
 
 @testset "defaultEnv" begin
     e = defaultEnv()
-    @test NIL == evaluate(NIL, e)
-    @test T == evaluate(T, e)
-    @test T == evaluate(lispRead("(atom? 'a)"), e)
     @test T == evaluate(lispRead("(eq 'a 'a)"), e)
     @test F == evaluate(lispRead("(eq 'a 'b)"), e)
     @test T == evaluate(lispRead("(eq (cons 'a 'b) (cons 'a 'b))"), e)
