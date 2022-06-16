@@ -75,6 +75,8 @@ end
       @test cons(QUOTE, cons(cons(a, b),NIL))  == parser(quoted_sequence,"'(a . b)")
     end
   end
-  
+  @testset "define" begin
+    @test list(symbol("define"), symbol("kons"), list(symbol("lambda"), list(a, b), list(symbol("cons"), a, b))) == parser("(define kons (lambda (a b) (cons a b)))")
+  end
 end
 

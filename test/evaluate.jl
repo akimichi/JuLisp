@@ -25,6 +25,7 @@
       @test a == evaluate(parser("(car '(a . b))"), e)
       @test b == evaluate(parser("(cdr '(a . b))"), e)
       @test cons(a, b) == evaluate(parser("(cons 'a 'b)"), e)
+      @test cons(a, b) == evaluate(parser("((lambda (a b) (cons a b)) 'a 'b)"), e)
       @test cons(a, cons(b, NIL)) == evaluate(parser("(list 'a 'b)"), e)
       @test a == evaluate(parser("(car '(a . b))"), e)
       @test b == evaluate(parser("(cdr '(a . b))"), e)
@@ -42,56 +43,19 @@
       @test a == evaluate(parser("(if nil 'a 'b)"), e)
       @test a == evaluate(parser("(if nil 'a)"), e)
     end
-    @testset "Closure" begin
-         e = defaultEnv()
-         @test a == evaluate(parser("((lambda (a) (car a)) '(a . b))"), e)
-        define(e, symbol("kar"), closure(list(a), parser("((car a))"), e))
-        @test a == evaluate(parser("(kar '(a . b))"), e) 
-        @test b == evaluate(parser("(define a 'b)"), e)
-        @test b == evaluate(a, e)
-        evaluate(parser("(define kons (lambda (a b) (cons a b)))"), e)
-        @test cons(a, b) == evaluate(parser("(kons 'a 'b)"), e)
-    end
-
 
 end
 
-@testset "defaultEnv" begin
-    e = defaultEnv()
-    @test T == evaluate(parser("(eq 'a 'a)"), e)
-    @test F == evaluate(parser("(eq 'a 'b)"), e)
-    @test T == evaluate(parser("(eq (cons 'a 'b) (cons 'a 'b))"), e)
-    @test a == evaluate(parser("(car '(a . b))"), e)
-    @test b == evaluate(parser("(cdr '(a . b))"), e)
-    @test cons(a, b) == evaluate(parser("(cons 'a 'b)"), e)
-    @test cons(a, cons(b, NIL)) == evaluate(parser("(list 'a 'b)"), e)
-    @test cons(a, b) == evaluate(parser("((lambda (a b) (cons a b)) 'a 'b)"), e)
-    @test a == evaluate(parser("(define a 'a)"), e)
-    @test a == evaluate(parser("a"), e)
-    @test a == evaluate(parser("(if T 'a 'b)"), e)
-    @test a == evaluate(parser("(if nil 'a 'b)"), e)
-    @test a == evaluate(parser("(if nil 'a)"), e)
-end
 
-#@testset "Closure" begin
-#    e = defaultEnv()
-#    @test a == evaluate(lispRead("((lambda (a) (car a)) '(a . b))"), e)
-#    define(e, symbol("kar"), closure(list(a), lispRead("((car a))"), e))
-#    @test a == evaluate(lispRead("(kar '(a . b))"), e) 
-#    @test b == evaluate(lispRead("(define a 'b)"), e)
-#    @test b == evaluate(a, e)
-#    evaluate(lispRead("(define kons (lambda (a b) (cons a b)))"), e)
-#    @test cons(a, b) == evaluate(lispRead("(kons 'a 'b)"), e)
-#end
 
-@testset "append" begin
-    e = defaultEnv()
-    evaluate(lispRead("""
-        (define append
-            (lambda (a b)
-             (if (null? a)
-                 b
-                 (cons (car a) (append (cdr a) b))  )))
-          """), e)
-    @test list(a, b, c, d) == evaluate(lispRead("(append '(a b) '(c d))"), e)
-end
+# @testset "append" begin
+#     e = defaultEnv()
+#     evaluate(parser("""
+#         (define append
+#             (lambda (a b)
+#              (if (null? a)
+#                  b
+#                  (cons (car a) (append (cdr a) b))  )))
+#           """), e)
+#     @test list(a, b, c, d) == evaluate(parser("(append '(a b) '(c d))"), e)
+# end
