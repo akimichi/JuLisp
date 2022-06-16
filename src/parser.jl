@@ -27,6 +27,7 @@ identifier = initial + Repeat(subsequent) + (postfix | ~e"") |> args -> Sym(Symb
 
 sentence = Delayed()
 list_token = Delayed()
+array_token = Delayed()
 sequence = Delayed()
 integer_number = PInt64() > Num
 float_number = PFloat64() > Num
@@ -41,9 +42,13 @@ quoted_exp = quoted_symbol | quoted_sequence
 # expression = (atom_token | quoted_exp | sequence)
 expression = (sequence | quoted_exp | atom_token)
 items = Repeat(expression+ spc) |> args -> convert(Array{Object}, args)
+sequence_prefix = E"(" + items
+sequence_postfix = E")" 
+dotted_pair_postfix = E"." + spc + expression + spc + E")"
 dotted_pair = E"(" + spc + items + spc + E"." + spc + expression + spc + E")" |> args -> makeList(args[1],args[2])
 list_token.matcher = E"(" + items + E")" |> args -> makeList(args[1],NIL)
-sequence.matcher = dotted_pair | list_token
+array_token.matcher = E"[" + items + E"]" |> args -> makeList(args[1],NIL)
+sequence.matcher = dotted_pair | list_token | array_token
 sentence.matcher = expression + Eos()
 
 
