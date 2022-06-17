@@ -76,8 +76,7 @@ end
     end
   end
   @testset "define" begin
-    # @test list(symbol("define"), symbol("kons"), list(symbol("lambda"), list(a, b), list(symbol("cons"), a, b))) == parser("[define kons [lambda [a b] [cons a b]]]")
-    @test list(symbol("define"), symbol("kons"), list(symbol("lambda"), list(a, b), list(symbol("cons"), a, b))) == parser("(define kons (lambda [a b] [cons a b]))")
+    @test list(symbol("define"), symbol("kons"), list(symbol("lambda"), list(a, b), list(symbol("cons"), a, b))) == parser("(define kons (lambda (a b) (cons a b)))")
   end
 end
 

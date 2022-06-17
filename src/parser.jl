@@ -47,8 +47,7 @@ sequence_postfix = E")"
 dotted_pair_postfix = E"." + spc + expression + spc + E")"
 dotted_pair = E"(" + spc + items + spc + E"." + spc + expression + spc + E")" |> args -> makeList(args[1],args[2])
 list_token.matcher = E"(" + items + E")" |> args -> makeList(args[1],NIL)
-array_token.matcher = E"[" + items + E"]" |> args -> makeList(args[1],NIL)
-sequence.matcher = dotted_pair | list_token | array_token
+sequence.matcher = dotted_pair | list_token
 sentence.matcher = expression + Eos()
 
 

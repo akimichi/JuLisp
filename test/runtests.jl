@@ -14,6 +14,11 @@ end
   include("./pair.jl")
 end
 
+@time @testset "parser" begin
+  include("./parser.jl")
+end
+
+
 @testset "environment" begin
   include("./env.jl")
 end
@@ -53,11 +58,6 @@ end
 @time @testset "repl" begin
   include("./repl.jl")
 end
-
-@time @testset "parser" begin
-  include("./parser.jl")
-end
-
 @time @testset "SICP" begin
   include("./SICP/section-1-1.jl")
 end
