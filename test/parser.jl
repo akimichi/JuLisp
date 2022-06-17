@@ -72,6 +72,7 @@ end
     end
     @testset "quoted_sequence" begin
       @test cons(QUOTE, cons(cons(Num(1), cons(Num(2),NIL)),NIL))  == parser(quoted_sequence,"'(1 2)")
+      # (QUOTE (a . b))
       @test cons(QUOTE, cons(cons(a, b),NIL))  == parser(quoted_sequence,"'(a . b)")
     end
   end
