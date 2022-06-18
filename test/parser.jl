@@ -67,12 +67,14 @@ end
     @test cons(a, cons(b, c))  == parser(dotted_pair, "(a b . c)")
   end
   @testset "quoted_symbol" begin
-    @test  cons(QUOTE, cons(symbol("a"),NIL))  == parser(quoted_symbol,"'a")
+    @test  cons(QUOTE, symbol("a"))  == parser(quoted_symbol,"'a")
+    # @test  cons(QUOTE, cons(symbol("a"),NIL))  == parser(quoted_symbol,"'a")
   end
   @testset "quoted_sequence" begin
-    # @test cons(QUOTE, cons(cons(Num(1), cons(Num(2),NIL)),NIL))  == parser(quoted_sequence,"'(1 2)")
     @test cons(QUOTE, cons(Num(1), cons(Num(2),NIL)))  == parser(quoted_sequence,"'(1 2)")
+    # @test cons(QUOTE, cons(cons(Num(1), cons(Num(2),NIL)),NIL))  == parser(quoted_sequence,"'(1 2)")
     # (QUOTE (a . b))
+    @test cons(QUOTE, cons(a, b))  == parser(quoted_sequence,"'(a . b)")
     # @test cons(QUOTE, cons(cons(a, b),NIL))  == parser(quoted_sequence,"'(a . b)")
   end
   @testset "define" begin
