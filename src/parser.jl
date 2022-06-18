@@ -50,21 +50,21 @@ date_token = E"@" + p"\d+-\d+-\d+" |> args -> date(String(join(args)))
 atom_token = num_token | string_token | symbol_token | date_token
 # quoted_symbol = E"'" + symbol_token |> args -> list(QUOTE, args[1])
 quoted_symbol = E"'" + symbol_token |> args -> cons(QUOTE, args[1])
-# quoted_sequence = E"'" + sequence |> args -> list(QUOTE, args[1])
 quoted_sequence = E"'" + sequence |> args -> cons(QUOTE, args[1])
 quoted_exp = quoted_symbol | quoted_sequence
 # expression = (atom_token | quoted_exp | sequence)
 expression = (sequence | quoted_exp | atom_token)
 items = Repeat(expression+ spc) |> args -> convert(Array{Object}, args)
 sequence_prefix = E"(" + items
-sequence_postfix = E")" 
-dotted_pair_postfix = E"." + spc + expression + spc + E")"
+sequence_postfix = E")"  |> args -> NIL
+dotted_pair_postfix = E"." + spc + expression + spc + E")" |> args -> args[1]
 dotted_pair = sequence_prefix + dotted_pair_postfix |> args -> makeList(args[1], args[2])
 # dotted_pair = E"(" + spc + items + spc + E"." + spc + expression + spc + E")" |> args -> makeList(args[1], args[2])
 # dotted_pair = E"(" + spc + items + spc + E"." + spc + expression + spc + E")" |> args -> foldr(Pair,args[1], args[2])
 list_token.matcher = sequence_prefix + sequence_postfix |> args -> makeList(args[1],NIL)
 # list_token.matcher = E"(" + items + E")" |> args -> makeList(args[1],NIL)
-sequence.matcher = dotted_pair | list_token
+sequence.matcher = sequence_prefix + (dotted_pair_postfix | sequence_postfix) |> args -> makeList(args[1],args[2])
+# sequence.matcher = dotted_pair | list_token
 sentence.matcher = expression + Eos()
 
 
