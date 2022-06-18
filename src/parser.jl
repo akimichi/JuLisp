@@ -59,9 +59,11 @@ items = Repeat(expression+ spc) |> args -> convert(Array{Object}, args)
 sequence_prefix = E"(" + items
 sequence_postfix = E")" 
 dotted_pair_postfix = E"." + spc + expression + spc + E")"
+dotted_pair = sequence_prefix + dotted_pair_postfix |> args -> makeList(args[1], args[2])
+# dotted_pair = E"(" + spc + items + spc + E"." + spc + expression + spc + E")" |> args -> makeList(args[1], args[2])
 # dotted_pair = E"(" + spc + items + spc + E"." + spc + expression + spc + E")" |> args -> foldr(Pair,args[1], args[2])
-dotted_pair = E"(" + spc + items + spc + E"." + spc + expression + spc + E")" |> args -> makeList(args[1], args[2])
-list_token.matcher = E"(" + items + E")" |> args -> makeList(args[1],NIL)
+list_token.matcher = sequence_prefix + sequence_postfix |> args -> makeList(args[1],NIL)
+# list_token.matcher = E"(" + items + E")" |> args -> makeList(args[1],NIL)
 sequence.matcher = dotted_pair | list_token
 sentence.matcher = expression + Eos()
 
