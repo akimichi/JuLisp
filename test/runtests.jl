@@ -9,6 +9,8 @@ d = symbol("d")
 @testset "value" begin
   include("./symbol.jl")
   include("./num.jl")
+  include("./str.jl")
+  include("./date.jl")
 end
 @testset "datatype" begin
   include("./pair.jl")

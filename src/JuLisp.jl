@@ -14,6 +14,7 @@ export Num, number
 export Str, str
 export value
 export parser, interpret
+export mkString
 
 "Lispオブジェクトの抽象型です"
 abstract type Object

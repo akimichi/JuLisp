@@ -3,6 +3,7 @@ struct Sym <: Object
     symbol::Symbol
 end
 
+mkString(instance::Sym) = string(instance.symbol)
 show(io::IO, e::Sym) = print(io, e.symbol)
 value(e::Sym) = e.symbol
 

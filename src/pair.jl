@@ -1,3 +1,5 @@
+using JuLisp
+
 struct Pair <: Object
     car::Object
     cdr::Object
@@ -8,21 +10,20 @@ car(e::Pair) = e.car
 cdr(e::Pair) = e.cdr
 
 
-function mkString(pair::Pair)
-    if e.cdr isa Pair && e.cdr.cdr == NIL
-        if e.car == QUOTE
+function mkString(instance::Pair)
+    if instance.cdr isa Pair && instance.cdr.cdr == NIL
+        if instance.car == QUOTE
             # print(io, "'", e.cdr.car)
-            return "'$(e.cdr.car)"
+            return "'$(instance.cdr.car)"
         end
     end
-    x::Object = e
-    buffer = ""
-    buffer = buffer * "("
+    x::Object = instance
+    buffer = "("
     sep = ""
     while x isa Pair
-        buffer = sep * mkString(x.car)
-        sep = " "
-        x = x.cdr
+      buffer = "$(sep)$(mkString(x.car))"
+      sep = " "
+      x = x.cdr
     end
     if x != NIL
         buffer = " . " * mkString(x)

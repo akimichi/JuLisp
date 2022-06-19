@@ -1,5 +1,8 @@
 using JuLisp
 
+@testset "mkString" begin
+  @test "abc" == mkString(symbol("abc"))
+end
 
 @testset "LispSymbol" begin
     @test T == symbol("T")
