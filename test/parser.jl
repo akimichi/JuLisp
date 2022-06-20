@@ -76,7 +76,7 @@ end
     # @test cons(QUOTE, cons(cons(Num(1), cons(Num(2),NIL)),NIL))  == parser(quoted_sequence,"'(1 2)")
     # (QUOTE (a . b))
     # @test parser("'(a b)")  == parser(quoted_sequence,"'(a b)")
-    @test "(quote (a . (b . nil)))" == mkString(parser(quoted_sequence,"'(a b)"))
+    @test "(quote . (a . (b . nil)))" == mkString(parser(quoted_sequence,"'(a b)"))
     @test parser("(quote (a . b))")  == parser(quoted_sequence,"'(a . b)")
     @test "(quote . (a . b ))" == mkString(parser(quoted_sequence,"'(a . b)"))
   end
