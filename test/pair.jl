@@ -1,6 +1,13 @@
 @testset "Pair" begin
   @testset "mkString" begin
-    @test "" == mkString(cons(a,b))
+    @test "(a . b)" == mkString(cons(a,b))
+    @test "(a . (b . c))" == mkString(cons(a,cons(b,c)))
+    @test "(a . nil)" == mkString(list(a))
+    @test "(a . (b . nil))" == mkString(list(a,b))
+    @test "(quote . a)" == mkString(cons(QUOTE, a))
+    @test "(quote . (a . b))" == mkString(cons(QUOTE, cons(a,b)))
+    @test "(quote . (a . (b . nil)))" == mkString(cons(QUOTE, cons(a, cons(b,NIL))))
+    @test "(quote . (a . (b . nil)))" == mkString(cons(QUOTE, list(a, b)))
   end
   @test a == car(cons(a, b))
   @test b == cdr(cons(a, b))

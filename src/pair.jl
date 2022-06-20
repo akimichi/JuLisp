@@ -11,24 +11,7 @@ cdr(e::Pair) = e.cdr
 
 
 function mkString(instance::Pair)
-    if instance.cdr isa Pair && instance.cdr.cdr == NIL
-        if instance.car == QUOTE
-            # print(io, "'", e.cdr.car)
-            return "'$(instance.cdr.car)"
-        end
-    end
-    x::Object = instance
-    buffer = "("
-    sep = ""
-    while x isa Pair
-      buffer = "$(sep)$(mkString(x.car))"
-      sep = " "
-      x = x.cdr
-    end
-    if x != NIL
-        buffer = " . " * mkString(x)
-    end
-    return buffer * ")"
+  return "(" * "$(mkString(instance.car)) . $(mkString(instance.cdr))" * ")"
 end
 
 function show(io::IO, e::Pair)

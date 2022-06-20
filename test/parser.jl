@@ -74,6 +74,9 @@ end
     @test cons(QUOTE, cons(Num(1), cons(Num(2),NIL)))  == parser(quoted_sequence,"'(1 2)")
     # @test cons(QUOTE, cons(cons(Num(1), cons(Num(2),NIL)),NIL))  == parser(quoted_sequence,"'(1 2)")
     # (QUOTE (a . b))
+    # @test parser("'(a b)")  == parser(quoted_sequence,"'(a b)")
+    @test parser("(quote (a b))")  == parser(quoted_sequence,"'(a b)")
+    @test parser("(quote (a . b))")  == parser(quoted_sequence,"'(a . b)")
     @test cons(QUOTE, cons(a, b))  == parser(quoted_sequence,"'(a . b)")
   end
   @testset "define" begin
