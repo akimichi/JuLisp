@@ -1,6 +1,7 @@
 @testset "Pair" begin
   @testset "mkString" begin
     @test "(a . b)" == mkString(cons(a,b))
+    @test "(a . b)" == mkString(makeList(convert(Array{JuLisp.Object},[a]),b))
     @test "(a . (b . c))" == mkString(cons(a,cons(b,c)))
     @test "(a . nil)" == mkString(list(a))
     @test "(a . (b . nil))" == mkString(list(a,b))

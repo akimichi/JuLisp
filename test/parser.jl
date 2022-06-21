@@ -77,8 +77,10 @@ end
     # (QUOTE (a . b))
     # @test parser("'(a b)")  == parser(quoted_sequence,"'(a b)")
     @test "(quote . (a . (b . nil)))" == mkString(parser(quoted_sequence,"'(a b)"))
-    @test parser("(quote (a . b))")  == parser(quoted_sequence,"'(a . b)")
-    @test "(quote . (a . b ))" == mkString(parser(quoted_sequence,"'(a . b)"))
+    @test "(a . (b . nil))"  == mkString(parser(sequence,"(a b)"))
+    @test "(a . b)"  == mkString(parser(dotted_pair,"(a . b)"))
+    @test "(a . b)"  == mkString(parser(sequence,"(a . b)"))
+    @test "(quote . (a . b))"  == mkString(parser(quoted_sequence,"'(a . b)"))
   end
   @testset "define" begin
     @test list(symbol("define"), symbol("kons"), list(symbol("lambda"), list(a, b), list(symbol("cons"), a, b))) == parser("(define kons (lambda (a b) (cons a b)))")

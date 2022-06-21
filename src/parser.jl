@@ -2,12 +2,14 @@ using ParserCombinator
 
 export parse_rule
 export initial, subsequent, identifier, letter,digit, prefix, num_token, string_token, date_token, symbol_token, list_token, items, quoted_exp, quoted_symbol, expression, dotted_pair, quoted_sequence, sequence
+export makeList 
 
 function makeList(elements::Array{Object, 1}, last::Object)
     if last == NIL
         list(elements...)
     else
         for e in reverse(elements)
+            println("e: $e")
             last = Pair(e, last)
         end
         return last
@@ -20,6 +22,29 @@ function foldr(constructor::Pair, xs::Array{Object}, init::Object)
       else
         constructor(foldr(constructor, xs[2:end], init), xs[1])
       end
+end
+
+function dottedPairPostfixTransformer(args)
+  @info "expression: $(args[1])" 
+  return args[1]
+end
+
+function sequenceTransformer(args) 
+  if(args[2] == NIL)
+    return list(args[1]) # return makeList(args[1],args[2])
+  else
+    @info "args[2]: $(mkString(args[2]))"
+    @info "args[1]: $(args[1])"
+    @info "args[1][1]: $(args[1][1])"
+    if args[1] isa Array
+      @info "args[1] isa Array"
+      result = makeList(args[1],args[2])
+      @info "result: $(result)"
+      return result
+    else 
+      return cons(args[1],args[2])
+    end
+  end
 end
 
 spc = Drop(Star(Space()))
@@ -45,19 +70,19 @@ date_token = E"@" + p"\d+-\d+-\d+" |> args -> date(String(join(args)))
 atom_token = num_token | string_token | symbol_token | date_token
 # quoted_symbol = E"'" + symbol_token |> args -> list(QUOTE, args[1])
 quoted_symbol = E"'" + symbol_token |> args -> cons(QUOTE, args[1])
+# quoted_sequence = E"'" + sequence |> args -> list(QUOTE, args[1])
 quoted_sequence = E"'" + sequence |> args -> cons(QUOTE, args[1])
-# quoted_sequence = E"'" + sequence |> args -> cons(QUOTE, list(args[1]))
 quoted_exp = quoted_symbol | quoted_sequence
-# expression = (atom_token | quoted_exp | sequence)
-expression = (sequence | quoted_exp | atom_token)
+expression = (atom_token | sequence | quoted_exp)
 items = Repeat(expression + spc) |> args -> convert(Array{Object}, args)
-sequence_prefix = E"(" + items |> args -> args[1]
-# sequence_prefix = E"(" + items
-list_postfix = E")"  |> args -> NIL
-dotted_pair_postfix = E"." + spc + expression + spc + E")" 
-# dotted_pair_postfix = E"." + spc + expression + spc + E")" |> args -> args[1]
+sequence_prefix = E"(" + items
+# dotted_pair_postfix = E"." + spc + expression + spc + E")" 
+dotted_pair_postfix = E"." + spc + expression + spc + E")" |> args -> dottedPairPostfixTransformer(args)
+
 dotted_pair = sequence_prefix + dotted_pair_postfix |> args -> makeList(args[1], args[2])
-sequence.matcher = sequence_prefix + (dotted_pair_postfix | list_postfix) |> args -> makeList(args[1],args[2])
+list_postfix = E")"  |> args -> NIL
+sequence.matcher = sequence_prefix + (dotted_pair_postfix | list_postfix) |> args -> sequenceTransformer(args)
+# sequence.matcher = sequence_prefix + (dotted_pair_postfix | list_postfix) |> args -> makeList(args[1],args[2])
 # sequence.matcher = dotted_pair | list_token
 # list_token.matcher = sequence_prefix + list_postfix |> args -> makeList(args[1],NIL)
 # list_token.matcher = E"(" + items + E")" |> args -> makeList(args[1],NIL)

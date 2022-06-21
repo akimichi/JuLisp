@@ -11,7 +11,7 @@ cdr(e::Pair) = e.cdr
 
 
 function mkString(instance::Pair)
-  return "(" * "$(mkString(instance.car)) . $(mkString(instance.cdr))" * ")"
+  return "($(mkString(instance.car)) . $(mkString(instance.cdr)))"
 end
 
 function show(io::IO, e::Pair)

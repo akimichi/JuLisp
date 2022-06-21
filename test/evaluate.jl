@@ -23,7 +23,7 @@
       @test Num(6) == evaluate(parser("(* (+ 1 2)  (- 6 4))"),e)
       @test Num(3) == evaluate(parser("(+ 1 2)"), e)
       @test a == evaluate(parser("(car '(a . b))"), e)
-      @test_skip b == evaluate(parser("(cdr '(a . b))"), e)
+      @test b == evaluate(parser("(cdr '(a . b))"), e)
       @test cons(a, b) == evaluate(parser("(cons 'a 'b)"), e)
       @test cons(a, b) == evaluate(parser("((lambda (a b) (cons a b)) 'a 'b)"), e)
       @test cons(a, cons(b, NIL)) == evaluate(parser("(list 'a 'b)"), e)
