@@ -4,33 +4,34 @@ export parse_rule
 export initial, subsequent, identifier, letter,digit, prefix, num_token, string_token, date_token, symbol_token, list_token, items, quoted_exp, quoted_symbol, expression, dotted_pair, quoted_sequence, sequence
 export makeList 
 
-function makeList(elements::Array{Object, 1}, last::Object)
-    if last == NIL
-        list(elements...)
-    else
-        for e in reverse(elements)
-            println("e: $e")
-            last = Pair(e, last)
-        end
-        return last
-    end
-end
-
-function foldr(constructor::Pair, xs::Array{Object}, init::Object) 
+function foldr(constructor, xs::Array{Object}, init::Object) 
       if isempty(xs) 
         return init
       else
-        constructor(foldr(constructor, xs[2:end], init), xs[1])
+        constructor(xs[1], foldr(constructor, xs[2:end], init))
       end
 end
+function makeList(elements::Array{Object, 1}, last::Object)
+  return foldr(cons, elements, last)
+#     if last == NIL
+#         list(elements...)
+#     else
+#         for e in reverse(elements)
+#             println("e: $e")
+#             last = Pair(e, last)
+#         end
+#         return last
+#     end
+end
+
 
 function dottedPairPostfixTransformer(args)
-  @info "expression: $(args[1])" 
+  @info "dottedPairPostfixTransformer: $(args[1])" 
   return args[1]
 end
 
 function sequenceTransformer(args) 
-  if(args[2] == NIL)
+  if args[2] == NIL
     return list(args[1]) # return makeList(args[1],args[2])
   else
     @info "args[2]: $(mkString(args[2]))"
@@ -38,9 +39,10 @@ function sequenceTransformer(args)
     @info "args[1][1]: $(args[1][1])"
     if args[1] isa Array
       @info "args[1] isa Array"
-      result = makeList(args[1],args[2])
-      @info "result: $(result)"
-      return result
+      return  makeList(args[1],args[2])
+      # result = makeList(args[1],args[2])
+      # @info "result: $(mkString(result))"
+      # return result
     else 
       return cons(args[1],args[2])
     end
