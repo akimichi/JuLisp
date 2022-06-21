@@ -21,9 +21,12 @@
   @test cons(a, NIL) == list(a)
   @test cons(a, cons(b, NIL)) == list(a, b)
   @test "(a . b)" == string(cons(a, b))
-  @test "(a b)" == string(cons(a, cons(b, NIL)))
-  @test "'a" == string(cons(QUOTE, cons(a, NIL)))
+  @test "(a . (b . nil))" == string(cons(a, cons(b, NIL)))
+  # @test "(a b)" == string(cons(a, cons(b, NIL)))
+  @test "(quote . (a . nil))" == string(cons(QUOTE, cons(a, NIL)))
+  # @test "'a" == string(cons(QUOTE, cons(a, NIL)))
   @test "(quote . a)" == string(cons(QUOTE, a))
-  @test "'(a b)" == string(cons(QUOTE, cons(cons(a, cons(b, NIL)), NIL)))
+  @test "(quote . ((a . (b . nil)) . nil))" == string(cons(QUOTE, cons(cons(a, cons(b, NIL)), NIL)))
+  # @test "'(a b)" == string(cons(QUOTE, cons(cons(a, cons(b, NIL)), NIL)))
 end
 

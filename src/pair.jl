@@ -11,26 +11,27 @@ cdr(e::Pair) = e.cdr
 
 
 function mkString(instance::Pair)
-  return "($(mkString(instance.car)) . $(mkString(instance.cdr)))"
+   return "($(mkString(instance.car)) . $(mkString(instance.cdr)))"
 end
 
 function show(io::IO, e::Pair)
-    if e.cdr isa Pair && e.cdr.cdr == NIL
-        if e.car == QUOTE
-            print(io, "'", e.cdr.car)
-            return
-        end
-    end
-    x::Object = e
-    print(io, "(")
-    sep = ""
-    while x isa Pair
-        print(io, sep, x.car)
-        sep = " "
-        x = x.cdr
-    end
-    if x != NIL
-        print(io, " . ", x)
-    end
-    print(io, ")")
+  print(io, mkString(e))
+    # if e.cdr isa Pair && e.cdr.cdr == NIL
+    #     if e.car == QUOTE
+    #         print(io, "'", e.cdr.car)
+    #         return
+    #     end
+    # end
+    # x::Object = e
+    # print(io, "(")
+    # sep = ""
+    # while x isa Pair
+    #     print(io, sep, x.car)
+    #     sep = " "
+    #     x = x.cdr
+    # end
+    # if x != NIL
+    #     print(io, " . ", x)
+    # end
+    # print(io, ")")
 end
