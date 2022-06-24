@@ -3,8 +3,10 @@ struct Sym <: Object
     symbol::Symbol
 end
 
-mkString(instance::Sym) = string(instance.symbol)
-show(io::IO, e::Sym) = print(io, e.symbol)
+function show(io::IO, e::Sym)
+  print(io, e.symbol)
+end
+
 value(e::Sym) = e.symbol
 
 symbol(name::String) = Sym(Symbol(name))

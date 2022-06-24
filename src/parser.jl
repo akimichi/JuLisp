@@ -26,9 +26,6 @@ function sequenceTransformer(args)
   if args[2] == NIL
     return list(args[1]) # return makeList(args[1],args[2])
   else
-    @info "args[2]: $(mkString(args[2]))"
-    @info "args[1]: $(args[1])"
-    @info "args[1][1]: $(args[1][1])"
     if args[1] isa Array
       @info "args[1] isa Array"
       return  makeList(args[1],args[2])

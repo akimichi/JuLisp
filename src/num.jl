@@ -6,8 +6,11 @@ function number(value::String)::Num
   num = parse(Float64, value)
   isinteger(num) ? Num(Int(num)) : Num(num)
 end
-mkString(n::Num) = string(n.value)
-show(io::IO, n::Num) = print(io, n.value)
+
+function show(io::IO, n::Num)
+  print(io, n.value)
+end
+
 value(n::Num) = n.value
 
 

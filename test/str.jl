@@ -1,7 +1,7 @@
 using JuLisp
 
-@testset "mkString" begin
-  @test "\'abc\'" == mkString(str("abc"))
+@testset "string" begin
+  @test "\'abc\'" == string(str("abc"))
 end
 
 

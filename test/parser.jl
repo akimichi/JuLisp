@@ -72,15 +72,14 @@ end
   end
   @testset "quoted_sequence" begin
     @test cons(QUOTE, cons(Num(1), cons(Num(2),NIL)))  == parser(quoted_sequence,"'(1 2)")
-    @test "(quote . (1 . (2 . nil)))" == mkString(parser(quoted_sequence,"'(1 2)"))
-    # @test cons(QUOTE, cons(cons(Num(1), cons(Num(2),NIL)),NIL))  == parser(quoted_sequence,"'(1 2)")
+    @test "(quote . (1 . (2 . nil)))" == string(parser(quoted_sequence,"'(1 2)"))
+    # @test "(quote . (1 . (2 . nil)))" == string(parser(quoted_sequence,"'(1 2)"))
     # (QUOTE (a . b))
-    # @test parser("'(a b)")  == parser(quoted_sequence,"'(a b)")
-    @test "(quote . (a . (b . nil)))" == mkString(parser(quoted_sequence,"'(a b)"))
-    @test "(a . (b . nil))"  == mkString(parser(sequence,"(a b)"))
-    @test "(a . b)"  == mkString(parser(dotted_pair,"(a . b)"))
-    @test "(a . b)"  == mkString(parser(sequence,"(a . b)"))
-    @test "(quote . (a . b))"  == mkString(parser(quoted_sequence,"'(a . b)"))
+    @test "(quote . (a . (b . nil)))" == string(parser(quoted_sequence,"'(a b)"))
+    @test "(a . (b . nil))"  == string(parser(sequence,"(a b)"))
+    @test "(a . b)"  == string(parser(dotted_pair,"(a . b)"))
+    @test "(a . b)"  == string(parser(sequence,"(a . b)"))
+    @test "(quote . (a . b))"  == string(parser(quoted_sequence,"'(a . b)"))
   end
   @testset "define" begin
     @test list(symbol("define"), symbol("kons"), list(symbol("lambda"), list(a, b), list(symbol("cons"), a, b))) == parser("(define kons (lambda (a b) (cons a b)))")

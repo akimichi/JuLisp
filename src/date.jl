@@ -11,8 +11,10 @@ function date(string::String)::DateType
   DateType(date)
 end
 
-mkString(instance::DateType) = Dates.format(instance.value, "@yyyy-mm-dd")
-show(io::IO, date::DateType) = print(io,Dates.format(date.value, "yyyy-mm-dd"))
+function show(io::IO, date::DateType) 
+  print(io,Dates.format(date.value, "@yyyy-mm-dd"))
+end
+
 value(date::DateType) = date.value
 today() = DateType(Dates.today())
 

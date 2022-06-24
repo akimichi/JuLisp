@@ -1,14 +1,14 @@
 @testset "Pair" begin
-  @testset "mkString" begin
-    @test "(a . b)" == mkString(cons(a,b))
-    @test "(a . b)" == mkString(makeList(convert(Array{JuLisp.Object},[a]),b))
-    @test "(a . (b . c))" == mkString(cons(a,cons(b,c)))
-    @test "(a . nil)" == mkString(list(a))
-    @test "(a . (b . nil))" == mkString(list(a,b))
-    @test "(quote . a)" == mkString(cons(QUOTE, a))
-    @test "(quote . (a . b))" == mkString(cons(QUOTE, cons(a,b)))
-    @test "(quote . (a . (b . nil)))" == mkString(cons(QUOTE, cons(a, cons(b,NIL))))
-    @test "(quote . (a . (b . nil)))" == mkString(cons(QUOTE, list(a, b)))
+  @testset "string" begin
+    @test "(a . b)" == string(cons(a,b))
+    @test "(a . b)" == string(makeList(convert(Array{JuLisp.Object},[a]),b))
+    @test "(a . (b . c))" == string(cons(a,cons(b,c)))
+    @test "(a . nil)" == string(list(a))
+    @test "(a . (b . nil))" == string(list(a,b))
+    @test "(quote . a)" == string(cons(QUOTE, a))
+    @test "(quote . (a . b))" == string(cons(QUOTE, cons(a,b)))
+    @test "(quote . (a . (b . nil)))" == string(cons(QUOTE, cons(a, cons(b,NIL))))
+    @test "(quote . (a . (b . nil)))" == string(cons(QUOTE, list(a, b)))
   end
   @test a == car(cons(a, b))
   @test b == cdr(cons(a, b))

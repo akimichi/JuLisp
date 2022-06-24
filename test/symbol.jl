@@ -1,7 +1,7 @@
 using JuLisp
 
-@testset "mkString" begin
-  @test "abc" == mkString(symbol("abc"))
+@testset "string" begin
+  @test "abc" == string(symbol("abc"))
 end
 
 @testset "LispSymbol" begin
