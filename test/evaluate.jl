@@ -8,7 +8,7 @@
     end
     @testset "quoted" begin
       @test a == evaluate(parser(quoted_symbol, "'a"), e)
-      @test_skip cons(a,b) == evaluate(parser("'(a . b)"), e)
+      @test cons(a,b) == evaluate(parser("'(a . b)"), e)
     end
     @testset "predicate" begin
       @test T == evaluate(parser("(atom? 'a)"), e)
@@ -28,7 +28,7 @@
       @test cons(a, b) == evaluate(parser("((lambda (a b) (cons a b)) 'a 'b)"), e)
       @test cons(a, cons(b, NIL)) == evaluate(parser("(list 'a 'b)"), e)
       @test a == evaluate(parser("(car '(a . b))"), e)
-      @test_skip b == evaluate(parser("(cdr '(a . b))"), e)
+      @test b == evaluate(parser("(cdr '(a . b))"), e)
       @test cons(a, b) == evaluate(parser("(cons 'a 'b)"), e)
       @test cons(a, NIL) == evaluate(parser("(cons 'a nil)"), e)
       @test list(a, b, c) == evaluate(parser("(list 'a 'b 'c)"), e)

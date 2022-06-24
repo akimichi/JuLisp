@@ -3,6 +3,7 @@ using ParserCombinator
 export parse_rule
 export initial, subsequent, identifier, letter,digit, prefix, num_token, string_token, date_token, symbol_token, list_token, items, quoted_exp, quoted_symbol, expression, dotted_pair, quoted_sequence, sequence
 export makeList 
+export list_token
 
 function foldr(constructor, xs::Array{Object}, init::Object) 
       if isempty(xs) 
@@ -13,20 +14,11 @@ function foldr(constructor, xs::Array{Object}, init::Object)
 end
 function makeList(elements::Array{Object, 1}, last::Object)
   return foldr(cons, elements, last)
-#     if last == NIL
-#         list(elements...)
-#     else
-#         for e in reverse(elements)
-#             println("e: $e")
-#             last = Pair(e, last)
-#         end
-#         return last
-#     end
 end
 
 
 function dottedPairPostfixTransformer(args)
-  @info "dottedPairPostfixTransformer: $(args[1])" 
+  # @info "dottedPairPostfixTransformer: $(args[1])" 
   return args[1]
 end
 
@@ -40,9 +32,6 @@ function sequenceTransformer(args)
     if args[1] isa Array
       @info "args[1] isa Array"
       return  makeList(args[1],args[2])
-      # result = makeList(args[1],args[2])
-      # @info "result: $(mkString(result))"
-      # return result
     else 
       return cons(args[1],args[2])
     end
@@ -60,7 +49,7 @@ postfix = p"[!?]"
 identifier = initial + Repeat(subsequent) + (postfix | ~e"") |> args -> Sym(Symbol(join(args)))
 
 sentence = Delayed()
-# list_token = Delayed()
+list_token = Delayed()
 array_token = Delayed()
 sequence = Delayed()
 integer_number = PInt64() > Num
@@ -83,11 +72,12 @@ dotted_pair_postfix = E"." + spc + expression + spc + E")" |> args -> dottedPair
 
 dotted_pair = sequence_prefix + dotted_pair_postfix |> args -> makeList(args[1], args[2])
 list_postfix = E")"  |> args -> NIL
-sequence.matcher = sequence_prefix + (dotted_pair_postfix | list_postfix) |> args -> sequenceTransformer(args)
+list_token.matcher = E"(" + items + E")" |> args -> makeList(args[1],NIL)
+# list_token.matcher = sequence_prefix + list_postfix |> args -> makeList(args[1],NIL)
+sequence.matcher = dotted_pair | list_token
+# sequence.matcher = sequence_prefix + (dotted_pair_postfix | list_postfix) |> args -> sequenceTransformer(args)
 # sequence.matcher = sequence_prefix + (dotted_pair_postfix | list_postfix) |> args -> makeList(args[1],args[2])
 # sequence.matcher = dotted_pair | list_token
-# list_token.matcher = sequence_prefix + list_postfix |> args -> makeList(args[1],NIL)
-# list_token.matcher = E"(" + items + E")" |> args -> makeList(args[1],NIL)
 sentence.matcher = expression + Eos()
 
 
