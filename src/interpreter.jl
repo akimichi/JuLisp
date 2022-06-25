@@ -10,8 +10,7 @@ function interpret(in::IO, out::IO, prompt::String)
         if symbol(input) == END_OF_EXPRESSION || symbol(input) == symbol("quit")
             break
         end
-        exp = parser(input)
-        show(out, evaluate(exp, env))
+        show(out, evaluate(parser(input), env))
         println(out)
     end
     return out

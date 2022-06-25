@@ -57,9 +57,9 @@ end
 end
 
 
-@time @testset "repl" begin
-  include("./repl.jl")
-end
+# @time @testset "repl" begin
+#   include("./repl.jl")
+# end
 @time @testset "SICP" begin
   include("./SICP/section-1-1.jl")
 end
