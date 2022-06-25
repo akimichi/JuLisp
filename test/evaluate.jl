@@ -43,6 +43,9 @@
       @test a == evaluate(parser("(if nil 'a 'b)"), e)
       @test a == evaluate(parser("(if nil 'a)"), e)
     end
+    @testset "expression" begin
+      @test Num(3)  == evaluate(parser("(+ 1 2)"), e)
+    end
 
 end
 

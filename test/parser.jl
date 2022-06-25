@@ -84,5 +84,8 @@ end
   @testset "define" begin
     @test list(symbol("define"), symbol("kons"), list(symbol("lambda"), list(a, b), list(symbol("cons"), a, b))) == parser("(define kons (lambda (a b) (cons a b)))")
   end
+  @testset "expression" begin
+    @test "(+ . (1 . (2 . nil)))" == string(parser("(+ 1 2)"))
+  end
 end
 
